@@ -49,7 +49,7 @@ public class Log
 			String settingsDir = OSUtil.getSettingsDirectory();
 			Date today = new Date();
 			String logFile = settingsDir + File.separator + 
-			         "ZCashGUIWallet_" +
+			         "KotoGUIWallet_" +
 			         (int)(today.getYear() + 1900) + "_" +
 			         (int)(today.getMonth() + 1) + "_" +
 			         "debug.log";

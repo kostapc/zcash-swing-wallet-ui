@@ -97,7 +97,7 @@ public class ZCashUI
     public ZCashUI(StartupProgressDialog progressDialog)
         throws IOException, InterruptedException, WalletCallException
     {
-        super("Swing Wallet UI for ZCash\u00AE - 0.73 (beta)");
+        super("Swing Wallet UI for Koto\u00AE - 0.73 (beta)");
         
         if (progressDialog != null)
         {
@@ -368,7 +368,7 @@ public class ZCashUI
         {
         	OS_TYPE os = OSUtil.getOSType();
         	
-        	Log.info("Starting ZCash Swing Wallet ...");
+        	Log.info("Starting Koto Swing Wallet ...");
         	Log.info("OS: " + System.getProperty("os.name") + " = " + os);
         	Log.info("Current directory: " + new File(".").getCanonicalPath());
         	Log.info("Class path: " + System.getProperty("java.class.path"));
@@ -424,7 +424,7 @@ public class ZCashUI
                 if ((wce.getMessage().indexOf("{\"code\":-28") != -1) || // Started but not ready
                 	(wce.getMessage().indexOf("error code: -28") != -1))
                 {
-                	Log.info("zcashd is currently starting...");
+                	Log.info("kotod is currently starting...");
                 	daemonStartInProgress = true;
                 }
             }
@@ -433,7 +433,7 @@ public class ZCashUI
             if ((zcashdInfo.status != DAEMON_STATUS.RUNNING) || (daemonStartInProgress))
             {
             	Log.info(
-            		"zcashd is not runing at the moment or has not started/synchronized 100% - showing splash...");
+            		"kotod is not runing at the moment or has not started/synchronized 100% - showing splash...");
 	            startupBar = new StartupProgressDialog(initialClientCaller);
 	            startupBar.setVisible(true);
 	            startupBar.waitForStartup();
@@ -464,7 +464,7 @@ public class ZCashUI
             {
                 JOptionPane.showMessageDialog(
                         null,
-                        "It appears that zcashd has been started but is not ready to accept wallet\n" +
+                        "It appears that kotod has been started but is not ready to accept wallet\n" +
                         "connections. It is still loading the wallet and blockchain. Please try to \n" +
                         "start the GUI wallet later...",
                         "Wallet communication error",
@@ -473,9 +473,9 @@ public class ZCashUI
             {
                 JOptionPane.showMessageDialog(
                     null,
-                    "There was a problem communicating with the ZCash daemon/wallet. \n" +
-                    "Please ensure that the ZCash server zcashd is started (e.g. via \n" + 
-                    "command  \"zcashd --daemon\"). Error message is: \n" +
+                    "There was a problem communicating with the Koto daemon/wallet. \n" +
+                    "Please ensure that the Koto server kotod is started (e.g. via \n" + 
+                    "command  \"kotod --daemon\"). Error message is: \n" +
                      wce.getMessage() +
                     "See the console output for more detailed error information!",
                     "Wallet communication error",
