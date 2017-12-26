@@ -256,7 +256,7 @@ public class AddressBookPanel extends JPanel {
             
             JPopupMenu menu = new JPopupMenu();
             
-            JMenuItem sendCash = new JMenuItem("Send Zcash to "+entry.name);
+            JMenuItem sendCash = new JMenuItem("Send Koto to "+entry.name);
             sendCash.addActionListener(new SendCashActionListener());
             menu.add(sendCash);
             
