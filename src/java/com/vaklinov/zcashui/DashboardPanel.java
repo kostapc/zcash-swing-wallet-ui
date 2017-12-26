@@ -28,7 +28,7 @@
  **********************************************************************************/
 package com.vaklinov.zcashui;
 
-
+import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -117,13 +117,14 @@ public class DashboardPanel
 		balanceStatusPanel.setLayout(new BorderLayout(3, 3)); 
 		//balanceStatusPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 9));
-		JLabel logoLabel = new JLabel(new ImageIcon(
-			this.getClass().getClassLoader().getResource("images/zcash-logo-square3.png")));
-		tempPanel.add(logoLabel);
+		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
+		//JLabel logoLabel = new JLabel(new ImageIcon(
+		//	this.getClass().getClassLoader().getResource("images/zcash-logo-square3.png")));
+		//tempPanel.add(logoLabel);
 		//tempPanel.add(new JLabel(" "));
-		JLabel zcLabel = new JLabel("Cash Wallet     ");
-		zcLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 32));
+		JLabel zcLabel = new JLabel("Koto Wallet   ");
+		zcLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 30));
+		//zcLabel.setForeground(Color.RED);
 		tempPanel.add(zcLabel);
 		tempPanel.setToolTipText("Powered by Koto\u00AE");
 		balanceStatusPanel.add(tempPanel, BorderLayout.WEST);
