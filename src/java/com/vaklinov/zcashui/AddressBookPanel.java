@@ -293,7 +293,7 @@ public class AddressBookPanel extends JPanel {
                 return;
             }
             String name = entries.get(row).name;
-            sendCashButton.setText("Send Zcash to "+name);
+            sendCashButton.setText("Send Koto to "+name);
             sendCashButton.setEnabled(true);
             deleteContactButton.setText("Delete contact "+name);
             deleteContactButton.setEnabled(true);
