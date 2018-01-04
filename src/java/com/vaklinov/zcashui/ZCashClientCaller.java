@@ -442,6 +442,19 @@ public class ZCashClientCaller
 		return jsonTransaction.get("confirmations").toString();
 	}
 	
+	// sub call minimize
+	public synchronized TransactonTimeConfirm getWalletTransactionTimeConfirm(String txID)
+		throws WalletCallException, IOException, InterruptedException
+	{
+		JsonObject jsonTransaction = this.executeCommandAndGetJsonObject(
+			"gettransaction", wrapStringParameter(txID));
+
+		TransactonTimeConfirm trans = new TransactonTimeConfirm(
+			String.valueOf(jsonTransaction.getLong("time", -1)),
+			jsonTransaction.get("confirmations").toString());
+
+		return trans;
+	}
 
 	// Returns confirmed balance only!
 	public synchronized String getBalanceForAddress(String address)
