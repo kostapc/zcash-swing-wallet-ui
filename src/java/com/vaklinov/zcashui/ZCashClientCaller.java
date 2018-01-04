@@ -98,6 +98,21 @@ public class ZCashClientCaller
 	// ZCash client program and daemon
 	private File zcashcli, zcashd;
 
+	// sub call minimize
+	public class TransactonTimeConfirm {
+		private String TransactionTime;
+		private String TransactionConfirm;
+		public TransactonTimeConfirm(String TransactionTime, String TransactionConfirm) {
+			this.TransactionTime = TransactionTime;
+			this.TransactionConfirm = TransactionConfirm;
+		}
+		public String getTransactionTime() {
+			return this.TransactionTime;
+		}
+		public String getTransactionConfirm() {
+			return this.TransactionConfirm;
+		}
+	}
 
 	public ZCashClientCaller(String installDir)
 		throws IOException
@@ -292,9 +307,11 @@ public class ZCashClientCaller
 		    	// TODO: some day refactor to use object containers
 		    	currentTransaction[0] = "\u2605Z (Private)";
 		    	currentTransaction[1] = "receive";
-		    	currentTransaction[2] = this.getWalletTransactionConfirmations(txID);
+		    	// sub call minimize
+		    	TransactonTimeConfirm timeconfirm = this.getWalletTransactionTimeConfirm(txID);
+		    	currentTransaction[2] = timeconfirm.getTransactionConfirm();
 		    	currentTransaction[3] = trans.get("amount").toString();
-		    	currentTransaction[4] = this.getWalletTransactionTime(txID); // TODO: minimize sub-calls
+		    	currentTransaction[4] = timeconfirm.getTransactionTime();
 		    	currentTransaction[5] = zAddress;
 		    	currentTransaction[6] = trans.get("txid").toString();
 
@@ -958,13 +975,23 @@ public class ZCashClientCaller
 
 	    CommandExecutor caller = new CommandExecutor(params);
 
-		String strResponse = caller.execute();
-		if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
-			strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
-		{
-		  	throw new WalletCallException("Error response from wallet: " + strResponse);
+		// Avoid error message dialog (5 times to Exception)
+		String strResponse = "";
+		int cntRetry = 0;
+		while(cntRetry < 5) {
+			strResponse = caller.execute();
+			if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
+				strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
+			{
+				cntRetry++;
+				Thread.sleep(500);
+				continue;
+			}
+			break;
 		}
-
+		if(cntRetry == 5) {
+			throw new WalletCallException("Error response from wallet: " + strResponse);
+		}
 		return strResponse;
 	}
 	
