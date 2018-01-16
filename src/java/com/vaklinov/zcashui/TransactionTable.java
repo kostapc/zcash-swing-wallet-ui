@@ -123,9 +123,9 @@ public class TransactionTable
 						txID = txID.replaceAll("\"", ""); // In case it has quotes
 						
 						Log.info("Transaction ID for block explorer is: " + txID);
-						// https://explorer.zcha.in/transactions/<ID>
+						// https://insight.kotocoin.info/tx/<ID>
 						Desktop.getDesktop().browse(
-							new URL("https://explorer.zcha.in/transactions/" + txID).toURI());
+							new URL("https://insight.kotocoin.info/tx/" + txID).toURI());
 					} catch (Exception ex)
 					{
 						Log.error("Unexpected error: ", ex);
