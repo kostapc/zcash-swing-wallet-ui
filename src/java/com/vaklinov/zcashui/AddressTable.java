@@ -102,7 +102,7 @@ public class AddressTable
 						
 						JOptionPane.showMessageDialog(
 							AddressTable.this.getRootPane().getParent(), 
-							(isZAddress ? "Z (Private)" : "T (Transparent)") +  " address:\n" +
+							(isZAddress ? "Private (z)" : "Transparent (k1,jz)") +  " address:\n" +
 							address + "\n" + 
 							"has private key:\n" +
 							privateKey + "\n\n" +

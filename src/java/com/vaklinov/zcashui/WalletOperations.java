@@ -396,7 +396,7 @@ public class WalletOperations
 			
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				(isZAddress ? "Z (Private)" : "T (Transparent)") +  " address:\n" +
+				(isZAddress ? "Private (z)" : "Transparent (k1,jz)") +  " address:\n" +
 				address + "\n" + 
 				"has private key:\n" +
 				privateKey + "\n\n" +

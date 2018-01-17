@@ -92,7 +92,7 @@ public class ZCashInstallationObserver
 		{
 			throw new InstallationDetectionException(
 				"The Koto GUI Wallet installation directory " + installDir + " needs\nto contain " +
-				"the command line utilities zcashd and koto-cli. At least one of them is missing! \n" +
+				"the command line utilities kotod and koto-cli. At least one of them is missing! \n" +
 				"Please place files KotoSwingWalletUI.jar, " + OSUtil.getZCashCli() + ", " + 
 				OSUtil.getZCashd() + " in the same directory.");
 		}
