@@ -42,10 +42,10 @@ import java.util.Locale;
 public class OSUtil
 {
 
-	public static enum OS_TYPE
+	public enum OS_TYPE
 	{
 		LINUX, WINDOWS, MAC_OS, FREE_BSD, OTHER_BSD, SOLARIS, AIX, OTHER_UNIX, OTHER_OS
-	};
+	}
 	
 	
 	public static boolean isUnixLike(OS_TYPE os)
