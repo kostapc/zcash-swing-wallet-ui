@@ -9,6 +9,8 @@ presents the information in a user-friendly manner.
 
 ## Building, installing and running the Wallet GUI
 
+Here link to [Binary distribution](https://github.com/koto-dev/koto/releases/tag/171224).
+
 Before installing the Desktop GUI Wallet you need to have Koto up and running. The following [guide](https://github.com/zcash/zcash/wiki/1.0-User-Guide) 
 explains how to set up [Koto](https://koto.cash/). There is also a user-friendly [instructional video](https://www.youtube.com/watch?v=ZoRFLkZG0zg&feature=youtu.be)
 on the same topic.
