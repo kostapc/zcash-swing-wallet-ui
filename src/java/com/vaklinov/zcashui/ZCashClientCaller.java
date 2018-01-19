@@ -979,25 +979,15 @@ public class ZCashClientCaller
 			params = new String[] { this.zcashcli.getCanonicalPath(), command1 };
 		}
 
-	    CommandExecutor caller = new CommandExecutor(params);
+		CommandExecutor caller = new CommandExecutor(params);
 
-		// Avoid error message dialog (5 times to Exception)
-		String strResponse = "";
-		int cntRetry = 0;
-		while(cntRetry < 5) {
-			strResponse = caller.execute();
-			if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
-				strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
-			{
-				cntRetry++;
-				Thread.sleep(500);
-				continue;
-			}
-			break;
-		}
-		if(cntRetry == 5) {
+		String strResponse = caller.execute();
+		if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
+			strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
+		{
 			throw new WalletCallException("Error response from wallet: " + strResponse);
 		}
+
 		return strResponse;
 	}
 	
