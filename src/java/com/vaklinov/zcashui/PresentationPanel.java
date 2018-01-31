@@ -45,9 +45,9 @@ import javax.swing.JPanel;
  *
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
-public class PresentationPanel 
-	extends JPanel 
-{
+public class PresentationPanel extends JPanel  {
+
+	static final int padding = 5;
 	static final int GRADIENT_EXTENT = 17;
 
 	static final Color  colorBorder = new Color(140, 145, 145);

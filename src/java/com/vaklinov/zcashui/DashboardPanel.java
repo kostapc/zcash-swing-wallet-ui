@@ -118,10 +118,13 @@ public class DashboardPanel
 		//balanceStatusPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-		//JLabel logoLabel = new JLabel(new ImageIcon(
-		//	this.getClass().getClassLoader().getResource("images/zcash-logo-square3.png")));
-		//tempPanel.add(logoLabel);
-		//tempPanel.add(new JLabel(" "));
+
+		JLabel logoLabel = new JLabel(new ImageIcon(
+			this.getClass().getClassLoader().getResource("images/koto-logo-square3.png"))
+		);
+		tempPanel.add(logoLabel);
+		tempPanel.add(new JLabel(" "));
+
 		JLabel zcLabel = new JLabel("Koto Wallet   ");
 		zcLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 30));
 		//zcLabel.setForeground(Color.RED);

@@ -56,6 +56,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import cash.koto.daemon.windows.CheckAndInit;
 import com.vaklinov.zcashui.OSUtil.OS_TYPE;
 import com.vaklinov.zcashui.ZCashClientCaller.NetworkAndBlockchainInfo;
 import com.vaklinov.zcashui.ZCashClientCaller.WalletCallException;
@@ -97,7 +98,7 @@ public class ZCashUI
     public ZCashUI(StartupProgressDialog progressDialog)
         throws IOException, InterruptedException, WalletCallException
     {
-        super("Swing Wallet UI for Koto\u00AE - 0.73 (beta)");
+        super("Swing Wallet UI for Koto\u00AE - 0.74 (beta)");
         
         if (progressDialog != null)
         {
@@ -106,7 +107,7 @@ public class ZCashUI
         
         ClassLoader cl = this.getClass().getClassLoader();
 
-        this.setIconImage(new ImageIcon(cl.getResource("images/zcash-logo-large.png")).getImage());
+        this.setIconImage(new ImageIcon(cl.getResource("images/koto-logo-large.png")).getImage());
 
         Container contentPane = this.getContentPane();
 
@@ -311,7 +312,7 @@ public class ZCashUI
 
                 JOptionPane.showMessageDialog(
                     ZCashUI.this.getRootPane().getParent(),
-                    "The ZCash GUI Wallet is currently considered experimental. Use of this software\n" +
+                    "The Koto GUI Wallet is currently considered experimental. Use of this software\n" +
                     "comes at your own risk! Be sure to read the list of known issues and limitations\n" +
                     "at this page: https://github.com/vaklinov/zcash-swing-wallet-ui\n\n" +
                     "This program is not officially endorsed by or associated with the ZCash project\n" +
@@ -399,10 +400,18 @@ public class ZCashUI
             
             // If zcashd is currently not running, do a startup of the daemon as a child process
             // It may be started but not ready - then also show dialog
-            ZCashInstallationObserver initialInstallationObserver = 
-            	new ZCashInstallationObserver(OSUtil.getProgramDirectory());
+            ZCashInstallationObserver initialInstallationObserver;
+            try {
+                initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
+            } catch (InstallationDetectionException iex) {
+                // trying to init and then restart app
+                // TODO: NOT READY FOR NOW
+                // CheckAndInit checkAndInit = new CheckAndInit();
+                // checkAndInit.process();
+                //initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
+                throw iex;
+            }
             DaemonInfo zcashdInfo = initialInstallationObserver.getDaemonInfo();
-            initialInstallationObserver = null;
             
             ZCashClientCaller initialClientCaller = new ZCashClientCaller(OSUtil.getProgramDirectory());
             boolean daemonStartInProgress = false;
@@ -438,7 +447,6 @@ public class ZCashUI
 	            startupBar.setVisible(true);
 	            startupBar.waitForStartup();
             }
-            initialClientCaller = null;
             
             // Main GUI is created here
             ZCashUI ui = new ZCashUI(startupBar);

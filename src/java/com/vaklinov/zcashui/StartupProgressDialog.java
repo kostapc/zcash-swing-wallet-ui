@@ -3,7 +3,6 @@
 package com.vaklinov.zcashui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.io.File;
@@ -11,10 +10,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,12 +17,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import com.vaklinov.zcashui.OSUtil.OS_TYPE;
 import com.vaklinov.zcashui.ZCashClientCaller.WalletCallException;
 
 
@@ -51,7 +44,7 @@ public class StartupProgressDialog extends JFrame {
     {
         this.clientCaller = clientCaller;
         
-        URL iconUrl = this.getClass().getClassLoader().getResource("images/zcash-logo-large.png");
+        URL iconUrl = this.getClass().getClassLoader().getResource("images/koto-logo-large.png");
         imageIcon = new ImageIcon(iconUrl);
         imageLabel.setIcon(imageIcon);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 0, 16));
@@ -111,8 +104,7 @@ public class StartupProgressDialog extends JFrame {
             // What if started by hand but taking long to initialize???
 //            doDispose();
 //            return;
-        } else
-        {
+        } else {
         	Log.info("Splash: kotod will be started...");
         }
         
@@ -143,8 +135,9 @@ public class StartupProgressDialog extends JFrame {
             }
             
             JsonValue code = info.get("code");
-            if (code == null || (code.asInt() != STARTUP_ERROR_CODE))
+            if (code == null || (code.asInt() != STARTUP_ERROR_CODE)) {
                 break;
+            }
             final String message = info.getString("message", "???");
             setProgressText(message);
             
@@ -184,8 +177,9 @@ public class StartupProgressDialog extends JFrame {
 	                                           "Hopefully it will stop later!");
 	                        //System.out.println("zcashd is still alive, killing forcefully");
 	                        //daemonProcess.destroyForcibly();
-	                    } else
-	                    	Log.info("kotod shut down successfully");
+                    } else {
+                        Log.info("kotod shut down successfully");
+                    }
                 } catch (Exception bad) {
                 	Log.error("Couldn't stop kotod!", bad);
                 }
