@@ -152,7 +152,13 @@ public class ZCashClientCaller
 		throws IOException, InterruptedException 
 	{
 		String exportDir = OSUtil.getUserHomeDirectory().getCanonicalPath();
-		
+
+		Log.info(String.format(
+			"staring daemon at \"%s %s\"",
+			zcashd.getCanonicalPath(),
+			"-exportdir=" + exportDir
+		));
+
 	    CommandExecutor starter = new CommandExecutor(
 	        new String[] 
 	        {
