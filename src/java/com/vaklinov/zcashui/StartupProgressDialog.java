@@ -44,7 +44,7 @@ public class StartupProgressDialog extends JFrame {
     {
         this.clientCaller = clientCaller;
         
-        URL iconUrl = this.getClass().getClassLoader().getResource("images/koto-logo-large.png");
+        URL iconUrl = this.getClass().getClassLoader().getResource("images/koto-logo-color-large.png");
         imageIcon = new ImageIcon(iconUrl);
         imageLabel.setIcon(imageIcon);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 0, 16));

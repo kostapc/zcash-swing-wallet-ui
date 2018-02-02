@@ -120,7 +120,7 @@ public class DashboardPanel
 		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
 
 		JLabel logoLabel = new JLabel(new ImageIcon(
-			this.getClass().getClassLoader().getResource("images/koto-logo-square3.png"))
+			this.getClass().getClassLoader().getResource("images/koto-logo-color-square47.png"))
 		);
 		tempPanel.add(logoLabel);
 		tempPanel.add(new JLabel(" "));
