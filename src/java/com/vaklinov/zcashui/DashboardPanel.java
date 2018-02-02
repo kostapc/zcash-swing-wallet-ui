@@ -117,13 +117,13 @@ public class DashboardPanel
 		balanceStatusPanel.setLayout(new BorderLayout(3, 3)); 
 		//balanceStatusPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-		//JLabel logoLabel = new JLabel(new ImageIcon(
-		//	this.getClass().getClassLoader().getResource("images/zcash-logo-square3.png")));
-		//tempPanel.add(logoLabel);
-		//tempPanel.add(new JLabel(" "));
-		JLabel zcLabel = new JLabel("Koto Wallet   ");
-		zcLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 30));
+		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 11));
+		JLabel logoLabel = new JLabel(new ImageIcon(
+			this.getClass().getClassLoader().getResource("images/koto-logo-color-square47.png")));
+		tempPanel.add(logoLabel);
+		tempPanel.add(new JLabel(" "));
+		JLabel zcLabel = new JLabel("Koto Wallet  ");
+		zcLabel.setFont(new Font("Helvetica", Font.BOLD, 32));
 		//zcLabel.setForeground(Color.RED);
 		tempPanel.add(zcLabel);
 		tempPanel.setToolTipText("Powered by Koto\u00AE");
@@ -131,7 +131,7 @@ public class DashboardPanel
 				
 		JLabel transactionHeadingLabel = new JLabel(
 			"<html><span style=\"font-size:2em\"><br/></span>Transactions:</html>");
-		tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
+		tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, -10));
 		transactionHeadingLabel.setFont(new Font("Helvetica", Font.BOLD, 19));
 		tempPanel.add(transactionHeadingLabel);
 		balanceStatusPanel.add(tempPanel, BorderLayout.CENTER);
