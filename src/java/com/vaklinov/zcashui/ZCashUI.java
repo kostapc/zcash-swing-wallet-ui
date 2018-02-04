@@ -405,9 +405,11 @@ public class ZCashUI
                 String[] param = arg.split("=");
                 if ("-datadir".equals(param[0]))
                 {
+                    Log.info("Data directory: " + param[1]);
                     dataDir = param[1];
                 } else if("-zcparamDir".equals(param[0]))
                 {
+                    Log.info("Zcparam directory: " + param[1]);
                     zcparamDir = param[1];
                 }
             }
