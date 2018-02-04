@@ -114,6 +114,50 @@ public class ZCashClientCaller
 		}
 	}
 
+	private String[] getZcashdWithDirParams(String... args)
+			throws IOException
+	{
+		String exportDir = OSUtil.getUserHomeDirectory().getCanonicalPath();
+		String dataDir = ZCashUI.dataDir;
+		String zcparamDir = ZCashUI.zcparamDir;
+
+		ArrayList<String> command = new ArrayList<>();
+
+		command.add(zcashd.getCanonicalPath());
+		command.add("-exportdir=" + exportDir);
+		if (dataDir != null) {
+			command.add("-datadir=" + dataDir);
+		}
+		if (zcparamDir != null) {
+			command.add("-zcparamdir=" + zcparamDir);
+		}
+
+		for(String arg: args){
+			command.add(arg);
+		}
+
+		return command.toArray(new String[0]);
+	}
+
+	private String[] getZcashcliWithDirParams(String... args)
+			throws IOException
+	{
+		String dataDir = ZCashUI.dataDir;
+
+		ArrayList<String> command = new ArrayList<>();
+
+		command.add(zcashcli.getCanonicalPath());
+		if (dataDir != null) {
+			command.add("-datadir=" + dataDir);
+		}
+
+		for(String arg: args){
+			command.add(arg);
+		}
+
+		return command.toArray(new String[0]);
+	}
+
 	public ZCashClientCaller(String installDir)
 		throws IOException
 	{
@@ -151,14 +195,8 @@ public class ZCashClientCaller
 	public synchronized Process startDaemon() 
 		throws IOException, InterruptedException 
 	{
-		String exportDir = OSUtil.getUserHomeDirectory().getCanonicalPath();
-		
-	    CommandExecutor starter = new CommandExecutor(
-	        new String[] 
-	        {
-	        	zcashd.getCanonicalPath(), 
-	        	"-exportdir=" + exportDir
-	        });
+
+	    CommandExecutor starter = new CommandExecutor(getZcashdWithDirParams());
 	    
 	    return starter.startChildProcess();
 	}
@@ -167,8 +205,7 @@ public class ZCashClientCaller
 	public /*synchronized*/ void stopDaemon() 
 		throws IOException,InterruptedException 
 	{
-	    CommandExecutor stopper = new CommandExecutor(
-	            new String[] { zcashcli.getCanonicalPath(), "stop" });
+	    CommandExecutor stopper = new CommandExecutor(getZcashcliWithDirParams( "stop" ));
 	    
 	    String result = stopper.execute();
 	    Log.info("Stop command issued: " + result);
@@ -178,8 +215,7 @@ public class ZCashClientCaller
 	public synchronized JsonObject getDaemonRawRuntimeInfo() 
 		throws IOException, InterruptedException, WalletCallException 
 	{
-	    CommandExecutor infoGetter = new CommandExecutor(
-	            new String[] { zcashcli.getCanonicalPath(), "getinfo"} );
+	    CommandExecutor infoGetter = new CommandExecutor(getZcashcliWithDirParams( "getinfo") );
 	    String info = infoGetter.execute();
 	    
 	    if (info.trim().toLowerCase(Locale.ROOT).startsWith("error: couldn't connect to server"))
@@ -535,15 +571,14 @@ public class ZCashClientCaller
 		    amountPattern,
 			"\"amount\":" + new DecimalFormat("########0.00######", decSymbols).format(Double.valueOf(amount)));
 		
-		String[] sendCashParameters = new String[]
-	    {
-		    this.zcashcli.getCanonicalPath(), "z_sendmany", wrapStringParameter(from),
-		    wrapStringParameter(toManyArrayStr),
-		    // Default min confirmations for the input transactions is 1
-		    "1",
-		    // transaction fee
-		    transactionFee
-		};
+		String[] sendCashParameters = getZcashcliWithDirParams(
+				"z_sendmany", wrapStringParameter(from),
+			    wrapStringParameter(toManyArrayStr),
+			    // Default min confirmations for the input transactions is 1
+			    "1",
+		    	// transaction fee
+		    	transactionFee
+		);
 		
 		// Safeguard to make sure the monetary amount does not differ after formatting
 		BigDecimal bdAmout = new BigDecimal(amount);
@@ -697,7 +732,7 @@ public class ZCashClientCaller
 	public synchronized boolean isWalletEncrypted()
    		throws WalletCallException, IOException, InterruptedException
     {
-		String[] params = new String[] { this.zcashcli.getCanonicalPath(), "walletlock" };
+		String[] params = getZcashcliWithDirParams( "walletlock" );
 		CommandExecutor caller = new CommandExecutor(params);
     	String strResult = caller.execute();
 
@@ -826,7 +861,7 @@ public class ZCashClientCaller
 		throws WalletCallException, IOException, InterruptedException
 	{
 		// First try a Z key
-		String[] params = new String[] { this.zcashcli.getCanonicalPath(), "z_importkey", wrapStringParameter(key) };
+		String[] params = getZcashcliWithDirParams("z_importkey", wrapStringParameter(key) );
 		CommandExecutor caller = new CommandExecutor(params);
     	String strResult = caller.execute();
 		
@@ -970,13 +1005,13 @@ public class ZCashClientCaller
 		String[] params;
 		if (command3 != null)
 		{
-			params = new String[] { this.zcashcli.getCanonicalPath(), command1, command2, command3 };
+			params = getZcashcliWithDirParams( command1, command2, command3 );
 		} else if (command2 != null)
 		{
-			params = new String[] { this.zcashcli.getCanonicalPath(), command1, command2 };
+			params = getZcashcliWithDirParams( command1, command2 );
 		} else
 		{
-			params = new String[] { this.zcashcli.getCanonicalPath(), command1 };
+			params = getZcashcliWithDirParams( command1 );
 		}
 
 		CommandExecutor caller = new CommandExecutor(params);
