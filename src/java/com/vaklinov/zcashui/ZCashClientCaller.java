@@ -119,7 +119,7 @@ public class ZCashClientCaller
 	{
 		String exportDir = OSUtil.getUserHomeDirectory().getCanonicalPath();
 		String dataDir = ZCashUI.dataDir;
-		String zcparamDir = ZCashUI.zcparamDir;
+		String zcparamsDir = ZCashUI.zcparamsDir;
 
 		ArrayList<String> command = new ArrayList<>();
 
@@ -128,8 +128,8 @@ public class ZCashClientCaller
 		if (dataDir != null) {
 			command.add("-datadir=" + dataDir);
 		}
-		if (zcparamDir != null) {
-			command.add("-zcparamdir=" + zcparamDir);
+		if (zcparamsDir != null) {
+			command.add("-zcparamsdir=" + zcparamsDir);
 		}
 
 		for(String arg: args){

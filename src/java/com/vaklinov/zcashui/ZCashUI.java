@@ -93,7 +93,7 @@ public class ZCashUI
     private AddressBookPanel addressBookPanel;
 
     public static String dataDir;
-    public static String zcparamDir;
+    public static String zcparamsDir;
 
     JTabbedPane tabs;
 
@@ -407,10 +407,10 @@ public class ZCashUI
                 {
                     Log.info("Data directory: " + param[1]);
                     dataDir = param[1];
-                } else if("-zcparamDir".equals(param[0]))
+                } else if("-zcparamsDir".equals(param[0]))
                 {
-                    Log.info("Zcparam directory: " + param[1]);
-                    zcparamDir = param[1];
+                    Log.info("Zcash Params directory: " + param[1]);
+                    zcparamsDir = param[1];
                 }
             }
 
