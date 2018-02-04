@@ -205,7 +205,7 @@ public class ZCashClientCaller
 	public /*synchronized*/ void stopDaemon() 
 		throws IOException,InterruptedException 
 	{
-	    CommandExecutor stopper = new CommandExecutor(getZcashcliWithDirParams( "stop" ));
+	    CommandExecutor stopper = new CommandExecutor(getZcashcliWithDirParams("stop"));
 	    
 	    String result = stopper.execute();
 	    Log.info("Stop command issued: " + result);
@@ -215,7 +215,7 @@ public class ZCashClientCaller
 	public synchronized JsonObject getDaemonRawRuntimeInfo() 
 		throws IOException, InterruptedException, WalletCallException 
 	{
-	    CommandExecutor infoGetter = new CommandExecutor(getZcashcliWithDirParams( "getinfo") );
+	    CommandExecutor infoGetter = new CommandExecutor(getZcashcliWithDirParams("getinfo"));
 	    String info = infoGetter.execute();
 	    
 	    if (info.trim().toLowerCase(Locale.ROOT).startsWith("error: couldn't connect to server"))
@@ -573,11 +573,11 @@ public class ZCashClientCaller
 		
 		String[] sendCashParameters = getZcashcliWithDirParams(
 				"z_sendmany", wrapStringParameter(from),
-			    wrapStringParameter(toManyArrayStr),
-			    // Default min confirmations for the input transactions is 1
-			    "1",
-		    	// transaction fee
-		    	transactionFee
+				wrapStringParameter(toManyArrayStr),
+				// Default min confirmations for the input transactions is 1
+				"1",
+				// transaction fee
+				transactionFee
 		);
 		
 		// Safeguard to make sure the monetary amount does not differ after formatting
@@ -732,7 +732,7 @@ public class ZCashClientCaller
 	public synchronized boolean isWalletEncrypted()
    		throws WalletCallException, IOException, InterruptedException
     {
-		String[] params = getZcashcliWithDirParams( "walletlock" );
+		String[] params = getZcashcliWithDirParams("walletlock");
 		CommandExecutor caller = new CommandExecutor(params);
     	String strResult = caller.execute();
 
@@ -861,7 +861,7 @@ public class ZCashClientCaller
 		throws WalletCallException, IOException, InterruptedException
 	{
 		// First try a Z key
-		String[] params = getZcashcliWithDirParams("z_importkey", wrapStringParameter(key) );
+		String[] params = getZcashcliWithDirParams("z_importkey", wrapStringParameter(key));
 		CommandExecutor caller = new CommandExecutor(params);
     	String strResult = caller.execute();
 		
@@ -1005,13 +1005,13 @@ public class ZCashClientCaller
 		String[] params;
 		if (command3 != null)
 		{
-			params = getZcashcliWithDirParams( command1, command2, command3 );
+			params = getZcashcliWithDirParams(command1, command2, command3);
 		} else if (command2 != null)
 		{
-			params = getZcashcliWithDirParams( command1, command2 );
+			params = getZcashcliWithDirParams(command1, command2);
 		} else
 		{
-			params = getZcashcliWithDirParams( command1 );
+			params = getZcashcliWithDirParams(command1);
 		}
 
 		CommandExecutor caller = new CommandExecutor(params);
