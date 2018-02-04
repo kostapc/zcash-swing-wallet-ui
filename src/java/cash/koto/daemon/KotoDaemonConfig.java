@@ -1,5 +1,8 @@
 package cash.koto.daemon;
 
+import com.vaklinov.zcashui.OSUtil;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,6 +17,7 @@ public final class KotoDaemonConfig {
 
     private static final String CONFIG_PROPERTIES = "daemon.properties";
 
+    public static final String sprout_dir = "sprout-dir";
     public static final String sprout_proving = "sprout-proving";
     public static final String sprout_verifying = "sprout-verifying";
 
@@ -21,6 +25,9 @@ public final class KotoDaemonConfig {
     public static final String sprout_verifying_url = "sprout-verifying_url";
     public static final String sprout_proving_hash = "sprout-proving-hash";
     public static final String sprout_verifying_hash = "sprout-verifying-hash";
+
+    public static final String koto_conf_file = "koto.conf.file";
+
 
     private enum instance {
         instance(new KotoDaemonConfig());
@@ -50,6 +57,14 @@ public final class KotoDaemonConfig {
 
     public String getProperty(String key) {
         return properties.getProperty(key);
+    }
+
+    public String getSproutDir() {
+        try {
+            return OSUtil.getSettingsDirectory() + File.separator + getProperty(sprout_dir);
+        } catch (IOException e) {
+            throw new StartupException(e);
+        }
     }
 
 
