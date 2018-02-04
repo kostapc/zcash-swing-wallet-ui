@@ -134,7 +134,7 @@ public class DashboardPanel
 				
 		JLabel transactionHeadingLabel = new JLabel(
 			"<html><span style=\"font-size:2em\"><br/></span>Transactions:</html>");
-		tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
+		tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, -10));
 		transactionHeadingLabel.setFont(new Font("Helvetica", Font.BOLD, 19));
 		tempPanel.add(transactionHeadingLabel);
 		balanceStatusPanel.add(tempPanel, BorderLayout.CENTER);
@@ -517,14 +517,14 @@ public class DashboardPanel
 		String color1 = transparentBalance.equals(transparentUCBalance) ? "" : "color:#cc3300;";
 		String color2 = privateBalance.equals(privateUCBalance)         ? "" : "color:#cc3300;";
 		String color3 = totalBalance.equals(totalUCBalance)             ? "" : "color:#cc3300;";
-		
+
 		String text =
 			"<html>" + 
-		    "<span style=\"font-family:monospace;font-size:1em;" + color1 + "\">Transparent balance: <span style=\"font-size:1.1em;\">" + 
+		    "<span style=\"font-family:monospace;font-size:1em;" + color1 + "\">Transparent (k1,jz) balance : <span style=\"font-size:1.1em;\">" +
 				transparentUCBalance + " KOTO </span></span><br/> " +
-			"<span style=\"font-family:monospace;font-size:1em;" + color2 + "\">Private (Z) balance: <span style=\"font-weight:bold;font-size:1.1em;\">" + 
+			"<span style=\"font-family:monospace;font-size:1em;" + color2 + "\">Private (z) balance &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.1em;\">" +
 		    	privateUCBalance + " KOTO </span></span><br/> " +
-			"<span style=\"font-family:monospace;font-size:1em;" + color3 + "\">Total (Z+T) balance: <span style=\"font-weight:bold;font-size:1.35em;\">" + 
+			"<span style=\"font-family:monospace;font-size:1em;" + color3 + "\">Total (z+k1,jz) balance &nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.35em;\">" +
 		    	totalUCBalance + " KOTO </span></span>" +
 			"<br/>  </html>";
 		
@@ -539,9 +539,9 @@ public class DashboardPanel
 					  "Unconfirmed (unspendable) balance is being shown due to an<br/>" + 
 		              "ongoing transaction! Actual confirmed (spendable) balance is:<br/>" +
 		              "<span style=\"font-size:5px\"><br/></span>" +
-					  "Transparent: " + transparentBalance + " KOTO<br/>" +
-		              "Private ( Z ): <span style=\"font-weight:bold\">" + privateBalance + " KOTO</span><br/>" +
-					  "Total ( Z+T ): <span style=\"font-weight:bold\">" + totalBalance + " KOTO</span>" +
+					  "Transp   arent balance(k1,jz) : " + transparentBalance + " KOTO<br/>" +
+		              "Private (z) balance           : <span style=\"font-weight:bold\">" + privateBalance + " KOTO</span><br/>" +
+					  "Total (z+k1,jz) balance       : <span style=\"font-weight:bold\">" + totalBalance + " KOTO</span>" +
 					  "</html>";
 		}
 		

@@ -264,7 +264,7 @@ public class ZCashClientCaller
 
 	    	// Needs to be the same as in getWalletZReceivedTransactions()
 	    	// TODO: some day refactor to use object containers
-	    	strTransactions[i][0] = "\u2606T (Public)";
+	    	strTransactions[i][0] = "\u2606 (Public)";
 	    	strTransactions[i][1] = trans.getString("category", "ERROR!");
 	    	strTransactions[i][2] = trans.get("confirmations").toString();
 	    	strTransactions[i][3] = trans.get("amount").toString();
@@ -311,7 +311,7 @@ public class ZCashClientCaller
 		    	String txID = trans.getString("txid", "ERROR!");
 		    	// Needs to be the same as in getWalletPublicTransactions()
 		    	// TODO: some day refactor to use object containers
-		    	currentTransaction[0] = "\u2605Z (Private)";
+		    	currentTransaction[0] = "\u2605 (Private)";
 		    	currentTransaction[1] = "receive";
 		    	// sub call minimize
 		    	TransactonTimeConfirm timeconfirm = this.getWalletTransactionTimeConfirm(txID);
@@ -401,16 +401,13 @@ public class ZCashClientCaller
                 	return null;
                 }
                 
-                StringBuilder MemoAscii = new StringBuilder("");
+		byte[] bytes = new byte[MemoHex.length() / 2 + 1];
                 for (int j = 0; j < MemoHex.length(); j += 2)
                 {
                     String str = MemoHex.substring(j, j + 2);
-                    if (!str.equals("00")) // Zero bytes are empty
-                    {
-                    	MemoAscii.append((char) Integer.parseInt(str, 16));
-                    }
+		    bytes[j/2] = (byte)Integer.parseInt(str, 16);
                 }
-                return MemoAscii.toString();
+		return  new String(bytes, "UTF-8");
             }
         }
 
@@ -497,12 +494,8 @@ public class ZCashClientCaller
 		StringBuilder hexMemo = new StringBuilder();
 		for (byte c : memo.getBytes("UTF-8"))
 		{
-			String hexChar = Integer.toHexString((int)c);
-			if (hexChar.length() < 2)
-			{
-				hexChar = "0" + hexChar;
-			}
-			hexMemo.append(hexChar);
+			hexMemo.append(Integer.toHexString((c & 0xF0) >> 4));
+			hexMemo.append(Integer.toHexString(c & 0xF));
 		}
 
 		JsonObject toArgument = new JsonObject();
@@ -992,25 +985,15 @@ public class ZCashClientCaller
 			params = new String[] { this.zcashcli.getCanonicalPath(), command1 };
 		}
 
-	    CommandExecutor caller = new CommandExecutor(params);
+		CommandExecutor caller = new CommandExecutor(params);
 
-		// Avoid error message dialog (5 times to Exception)
-		String strResponse = "";
-		int cntRetry = 0;
-		while(cntRetry < 5) {
-			strResponse = caller.execute();
-			if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
-				strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
-			{
-				cntRetry++;
-				Thread.sleep(500);
-				continue;
-			}
-			break;
-		}
-		if(cntRetry == 5) {
+		String strResponse = caller.execute();
+		if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
+			strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
+		{
 			throw new WalletCallException("Error response from wallet: " + strResponse);
 		}
+
 		return strResponse;
 	}
 	

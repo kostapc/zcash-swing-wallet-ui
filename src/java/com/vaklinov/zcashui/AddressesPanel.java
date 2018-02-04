@@ -93,9 +93,9 @@ public class AddressesPanel
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
 		buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		JButton newTAddressButton = new JButton("New T (Transparent) address");
+		JButton newTAddressButton = new JButton("New Transparent (k1,jz) address");
 		buttonPanel.add(newTAddressButton);
-		JButton newZAddressButton = new JButton("New Z (Private) address");
+		JButton newZAddressButton = new JButton("New Private (z) address");
 		buttonPanel.add(newZAddressButton);
 		buttonPanel.add(new JLabel("           "));
 		JButton refreshButton = new JButton("Refresh");
@@ -252,7 +252,7 @@ public class AddressesPanel
 						
 			JOptionPane.showMessageDialog(
 				this.getRootPane().getParent(), 
-				"A new " + (isZAddress ? "Z (Private)" : "T (Transparent)") 
+				"A new " + (isZAddress ? "Private (z)" : "Transparent (k1,jz)") 
 				+ " address has been created cuccessfully:\n" + address, 
 				"Address created", JOptionPane.INFORMATION_MESSAGE);
 			

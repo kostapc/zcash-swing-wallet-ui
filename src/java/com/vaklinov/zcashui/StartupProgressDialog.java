@@ -51,13 +51,12 @@ public class StartupProgressDialog extends JFrame {
         Container contentPane = getContentPane();
         contentPane.setLayout(borderLayout1);
         southPanel.setLayout(southPanelLayout);
-        southPanel.setBorder(BorderFactory.createEmptyBorder(0, 16, 16, 16));
+        southPanel.setBorder(BorderFactory.createEmptyBorder(0, 16, 12, 16));
         contentPane.add(imageLabel, BorderLayout.NORTH);
 		JLabel zcashWalletLabel = new JLabel(
-			"<html><span style=\"font-style:italic;font-weight:bold;font-size:2.65em\">" + 
-		    "Koto<span style=\"font-style:italic;font-weight:bold;font-size:1.5em;vertical-align:super\">" + 
-		    "\u00AE</span> Wallet</span></html>");
-		zcashWalletLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+			"<html><span style=\"font-weight:bold;font-family : 'Helvetica';font-size:3.4em\">" + 
+            "Koto Wallet</span></html>");
+		zcashWalletLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 2, 16));
 		// todo - place in a panel with flow center
 		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		tempPanel.add(zcashWalletLabel);
