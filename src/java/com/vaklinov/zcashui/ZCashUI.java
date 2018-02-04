@@ -407,7 +407,7 @@ public class ZCashUI
                 {
                     Log.info("Data directory: " + param[1]);
                     dataDir = param[1];
-                } else if("-zcparamsDir".equals(param[0]))
+                } else if("-zcparamsdir".equals(param[0]))
                 {
                     Log.info("Zcash Params directory: " + param[1]);
                     zcparamsDir = param[1];
