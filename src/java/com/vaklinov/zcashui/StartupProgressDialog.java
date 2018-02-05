@@ -19,12 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
+import cash.koto.daemon.UsersMessageConsole;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.vaklinov.zcashui.ZCashClientCaller.WalletCallException;
 
 
-public class StartupProgressDialog extends JFrame {
+public class StartupProgressDialog extends JFrame implements UsersMessageConsole{
     
 
     private static final int POLL_PERIOD = 1500;
@@ -40,7 +41,7 @@ public class StartupProgressDialog extends JFrame {
     
     private final ZCashClientCaller clientCaller;
     
-    public StartupProgressDialog(ZCashClientCaller clientCaller) 
+    public StartupProgressDialog(ZCashClientCaller clientCaller, String text)
     {
         this.clientCaller = clientCaller;
         
@@ -64,13 +65,23 @@ public class StartupProgressDialog extends JFrame {
         contentPane.add(southPanel, BorderLayout.SOUTH);
         progressBar.setIndeterminate(true);
         southPanel.add(progressBar, BorderLayout.NORTH);
-        progressLabel.setText("Starting...");
+        progressLabel.setText(text);
         southPanel.add(progressLabel, BorderLayout.SOUTH);
         
         pack();
         setLocationRelativeTo(null);
         
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    }
+
+    public void waitFor(final Object flag) {
+        try {
+            synchronized (flag) {
+                flag.wait();
+            }
+        } catch (InterruptedException e) {
+            Log.warning(e.getMessage());
+        }
     }
     
     public void waitForStartup() throws IOException,
@@ -83,7 +94,10 @@ public class StartupProgressDialog extends JFrame {
 //            if ("true".equalsIgnoreCase(System.getProperty("launching.from.appbundle")))
 //                performOSXBundleLaunch();
 //        }
-        
+        if(clientCaller==null) {
+            throw new IllegalStateException("called waitForStartup while caller not set");
+        }
+
         Log.info("Splash: checking if kotod is already running...");
         boolean shouldStartZCashd = false;
         try {
@@ -107,10 +121,17 @@ public class StartupProgressDialog extends JFrame {
         	Log.info("Splash: kotod will be started...");
         }
         
-        final Process daemonProcess = 
-        	shouldStartZCashd ? clientCaller.startDaemon() : null;
+        final Process daemonProcess = shouldStartZCashd ? clientCaller.startDaemon() : null;
         
         Thread.sleep(POLL_PERIOD); // just a little extra
+
+        if(!isAlive(daemonProcess)) {
+            int exitCode = daemonProcess.exitValue();
+            Log.warning("exit code for daemon present: "+exitCode);
+            OSUtil.printStreamToLog(daemonProcess.getErrorStream());
+            OSUtil.printStreamToLog(daemonProcess.getInputStream());
+            return;
+        }
         
         int iteration = 0;
         while(true) {
@@ -203,9 +224,14 @@ public class StartupProgressDialog extends JFrame {
 			public void run() {
 				progressLabel.setText(text);
 			}
-	     });
+	         });
     }
-    
+
+    @Override
+    public void showMessage(String text) {
+        setProgressText(text);
+    }
+
     // TODO: Unused for now
     private void performOSXBundleLaunch() throws IOException, InterruptedException {
     	Log.info("performing OSX Bundle-specific launch");

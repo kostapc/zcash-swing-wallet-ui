@@ -35,6 +35,7 @@ import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.StringTokenizer;
 
+import cash.koto.daemon.KotoDaemonConfig;
 import com.vaklinov.zcashui.OSUtil.OS_TYPE;
 
 
@@ -65,15 +66,29 @@ public class ZCashInstallationObserver
 	public ZCashInstallationObserver(String installDir)
 		throws IOException
 	{
-		// Detect daemon and client tools installation
-		File dir = new File(installDir);
 
+		File dir = new File(installDir);
 		if (!dir.exists() || dir.isFile())
 		{
 			throw new InstallationDetectionException(
-				"The Koto installation directory " + installDir + " does not exist or is not " +
-			    "a directory or is otherwise inaccessible to the wallet!");
+					"The Koto installation directory " + installDir + " does not exist or is not " +
+							"a directory or is otherwise inaccessible to the wallet!");
 		}
+
+		for(String path: new String[] {
+			KotoDaemonConfig.config().getConfigFilePath(),
+			KotoDaemonConfig.config().getSproutProvingFilePath(),
+			KotoDaemonConfig.config().getSproutVerifyingFilePath()
+		}) {
+			File confFile = new File(path);
+			if(!confFile.exists()) {
+				throw new InstallationDetectionException(
+						"The Koto necessary file " + path + " does not exist or is otherwise inaccessible to the wallet!"
+				);
+			}
+		}
+
+		// Detect daemon and client tools installation
 
 		File zcashd = new File(dir, OSUtil.getZCashd());
 		File zcashcli = new File(dir, OSUtil.getZCashCli());

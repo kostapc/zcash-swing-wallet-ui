@@ -1,6 +1,7 @@
 package com.vaklinov.zcashtest;
 
 import cash.koto.daemon.windows.CheckAndInit;
+import com.vaklinov.zcashui.Log;
 
 /**
  * 2018-01-31
@@ -11,6 +12,6 @@ import cash.koto.daemon.windows.CheckAndInit;
 public class TestWalletInit {
     public static void main(String[] args) {
         CheckAndInit checkAndInit = new CheckAndInit();
-        checkAndInit.process();
+        checkAndInit.process(Log.getUsersConsole());
     }
 }

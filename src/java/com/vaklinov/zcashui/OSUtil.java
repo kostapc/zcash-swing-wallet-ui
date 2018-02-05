@@ -29,8 +29,7 @@
 package com.vaklinov.zcashui;
 
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Locale;
 
 
@@ -132,6 +131,18 @@ public class OSUtil
 		return zcashcli;
 	}
 
+	public static String getKotoTx() {
+		String kototx = "koto-tx";
+
+		OS_TYPE os = getOSType();
+		if (os == OS_TYPE.WINDOWS)
+		{
+			kototx += ".exe";
+		}
+
+		return kototx;
+	}
+
 
 	// Returns the directory that the wallet program was started from
 	public static String getProgramDirectory()
@@ -176,33 +187,37 @@ public class OSUtil
         return new File(System.getProperty("user.home"));
 	}
 
-	public static String getDataDirectory() throws IOException {
+	public static String getDataDirectory() {
 		OS_TYPE os = getOSType();
-
-		if (os == OS_TYPE.MAC_OS) {
-			return new File(System.getProperty("user.home") +
-							File.separator+"Library"+
-							File.separator+"Application Support"
-			).getCanonicalPath();
-		} else if (os == OS_TYPE.WINDOWS) {
-			return new File(System.getenv("APPDATA")).getCanonicalPath();
-		} else {
-			return new File(System.getProperty("user.home")).getCanonicalPath();
-		}
+        try {
+            if (os == OS_TYPE.MAC_OS) {
+                return new File(System.getProperty("user.home") +
+                        File.separator + "Library" +
+                        File.separator + "Application Support"
+                ).getCanonicalPath();
+            } else if (os == OS_TYPE.WINDOWS) {
+                return new File(System.getenv("APPDATA")).getCanonicalPath();
+            } else {
+                return new File(System.getProperty("user.home")).getCanonicalPath();
+            }
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
 	}
 
-	public static String getBlockchainDirectory()
-		throws IOException
-	{
+	public static String getBlockchainDirectory() {
 		OS_TYPE os = getOSType();
-
-		if (os == OS_TYPE.MAC_OS) {
-			return new File(getDataDirectory()).getCanonicalPath();
-		} else if (os == OS_TYPE.WINDOWS) {
-			return new File(getDataDirectory() + File.separator + "Koto").getCanonicalPath();
-		} else {
-			return new File(getDataDirectory() + File.separator +".koto").getCanonicalPath();
-		}
+        try {
+            if (os == OS_TYPE.MAC_OS) {
+                return new File(getDataDirectory()).getCanonicalPath();
+            } else if (os == OS_TYPE.WINDOWS) {
+                return new File(getDataDirectory() + File.separator + "Koto").getCanonicalPath();
+            } else {
+                return new File(getDataDirectory() + File.separator + ".koto").getCanonicalPath();
+            }
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
 	}
 
 
@@ -336,5 +351,23 @@ public class OSUtil
 		// TODO: Try to find it with which/PATH
 
 		return null;
+	}
+
+	// TODO: use print writer interface released by logger
+	public static void printStreamToLog(InputStream is) {
+		BufferedInputStream bis = new BufferedInputStream(is);
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		int result = 0;
+		try {
+			result = bis.read();
+			while(result != -1) {
+				buf.write((byte) result);
+				result = bis.read();
+			}
+			// StandardCharsets.UTF_8.name() > JDK 7
+			Log.info(buf.toString("UTF-8"));
+		} catch (IOException e) {
+			Log.warning("cannot read from stream");
+		}
 	}
 }

@@ -60,11 +60,19 @@ public final class KotoDaemonConfig {
     }
 
     public String getSproutDir() {
-        try {
-            return OSUtil.getSettingsDirectory() + File.separator + getProperty(sprout_dir);
-        } catch (IOException e) {
-            throw new StartupException(e);
-        }
+        return OSUtil.getDataDirectory() + File.separator + getProperty(sprout_dir);
+    }
+
+    public String getConfigFilePath() {
+        return OSUtil.getBlockchainDirectory()+File.separator+ KotoDaemonConfig.config().getProperty(KotoDaemonConfig.koto_conf_file);
+    }
+
+    public String getSproutProvingFilePath() {
+        return getSproutDir()+File.separator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving);
+    }
+
+    public String getSproutVerifyingFilePath() {
+        return getSproutDir()+File.separator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying);
     }
 
 

@@ -394,7 +394,7 @@ public class ZCashUI
 	                {
 	                    UIManager.setLookAndFeel(ui.getClassName());
 	                    break;
-	                };
+	                }
 	            }
             }
             
@@ -405,11 +405,12 @@ public class ZCashUI
                 initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
             } catch (InstallationDetectionException iex) {
                 // trying to init and then restart app
-                // TODO: NOT READY FOR NOW
-                // CheckAndInit checkAndInit = new CheckAndInit();
-                // checkAndInit.process();
-                //initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
-                throw iex;
+                final CheckAndInit checkAndInit = new CheckAndInit();
+                StartupProgressDialog startupBar = new StartupProgressDialog(null,"first run initialization...");
+                startupBar.setVisible(true);
+                checkAndInit.process(startupBar);
+                startupBar.dispose();
+                initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
             }
             DaemonInfo zcashdInfo = initialInstallationObserver.getDaemonInfo();
             
@@ -443,7 +444,7 @@ public class ZCashUI
             {
             	Log.info(
             		"kotod is not runing at the moment or has not started/synchronized 100% - showing splash...");
-	            startupBar = new StartupProgressDialog(initialClientCaller);
+	            startupBar = new StartupProgressDialog(initialClientCaller, "starting...");
 	            startupBar.setVisible(true);
 	            startupBar.waitForStartup();
             }

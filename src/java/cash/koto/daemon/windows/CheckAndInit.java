@@ -2,14 +2,13 @@ package cash.koto.daemon.windows;
 
 import cash.koto.daemon.KotoDaemonConfig;
 import cash.koto.daemon.StartupException;
+import cash.koto.daemon.UsersMessageConsole;
 import com.vaklinov.zcashui.Log;
 import com.vaklinov.zcashui.OSUtil;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -22,15 +21,16 @@ import java.util.Random;
  */
 public class CheckAndInit {
 
-    private static final String binaries_kotod="koto.binaries.kotod";
-    private static final String binaries_koto_tx="koto.binaries.koto-tx";
-    private static final String binaries_koto_cli="koto.binaries.koto-cli";
+    private static final String binaries_kotod= "koto.binaries.windows.kotod";
+    private static final String binaries_koto_tx= "koto.binaries.windows.koto-tx";
+    private static final String binaries_koto_cli= "koto.binaries.windows.koto-cli";
 
 
-    public void process() {
+    public void process(UsersMessageConsole console) {
         try {
             // prepare dirs
             String chainDir = OSUtil.getBlockchainDirectory();
+            console.showMessage("checking conf directory...");
             Log.info("checking and creating conf directory: "+chainDir);
             File file = new File(chainDir);
             if(!file.exists()) {
@@ -39,9 +39,10 @@ public class CheckAndInit {
                }
             }
 
-            String confFilePath = chainDir+File.separator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.koto_conf_file);
+            String confFilePath = KotoDaemonConfig.config().getConfigFilePath();
             File confFile = new File(confFilePath);
             if(!confFile.exists()) {
+                console.showMessage("creating config file...");
                 Log.info("writing config file: "+confFilePath);
                 Random random = new Random();
                 String userName = OSUtil.getUsername()+"_"+random.nextLong();
@@ -64,27 +65,47 @@ public class CheckAndInit {
                     throw new StartupException("cannot create sproutDir: "+sproutDir);
                 }
             }
-            downloadBinary(
-                    KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving_url),
-                    sproutDir+File.pathSeparator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving)
-            );
-            verifyFileChecksum(
-                    sproutDir+File.pathSeparator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving),
-                    KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving_hash)
-            );
+            String sproutProvingFilePath = KotoDaemonConfig.config().getSproutProvingFilePath();
+            File sproutProvingFile = new File(sproutProvingFilePath);
+            if(!sproutProvingFile.exists()) {
+                console.showMessage("downloading sprout proving file...");
+                downloadBinary(
+                        KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving_url),
+                        sproutProvingFilePath
+                );
+                console.showMessage("checking sprout proving file...");
+                verifyFileChecksum(
+                        sproutProvingFilePath,
+                        KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_proving_hash)
+                );
+            }
 
-            downloadBinary(
-                    KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying_url),
-                    sproutDir+File.pathSeparator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying)
-            );
-            verifyFileChecksum(
-                    sproutDir+File.pathSeparator+KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying),
-                    KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying_hash)
-            );
-
-            downloadBinary(KotoDaemonConfig.config().getProperty(binaries_koto_cli),"koto-cli.exe");
-            downloadBinary(KotoDaemonConfig.config().getProperty(binaries_koto_tx),"koto-tx.exe");
-            downloadBinary(KotoDaemonConfig.config().getProperty(binaries_kotod),"kotod.exe");
+            String sproutVerifyingFilePath = KotoDaemonConfig.config().getSproutVerifyingFilePath();
+            File sproutVerifyingFile = new File(sproutVerifyingFilePath);
+            if(!sproutVerifyingFile.exists()) {
+                console.showMessage("downloading sprout verifying file...");
+                downloadBinary(
+                        KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying_url),
+                        sproutVerifyingFilePath
+                );
+                console.showMessage("checking sprout verifying file...");
+                verifyFileChecksum(
+                        sproutVerifyingFilePath,
+                        KotoDaemonConfig.config().getProperty(KotoDaemonConfig.sprout_verifying_hash)
+                );
+            }
+            if(!new File(OSUtil.getZCashCli()).exists()) {
+                console.showMessage("downloading koto CLI executable...");
+                downloadBinary(KotoDaemonConfig.config().getProperty(binaries_koto_cli), OSUtil.getZCashCli());
+            }
+            if(!new File(OSUtil.getKotoTx()).exists()) {
+                console.showMessage("downloading koto TX executable...");
+                downloadBinary(KotoDaemonConfig.config().getProperty(binaries_koto_tx), OSUtil.getKotoTx());
+            }
+            if(!new File(OSUtil.getZCashd()).exists()) {
+                console.showMessage("downloading kotod executable...");
+                downloadBinary(KotoDaemonConfig.config().getProperty(binaries_kotod), OSUtil.getZCashd());
+            }
 
         } catch (IOException e) {
             throw new StartupException(e);
@@ -93,7 +114,7 @@ public class CheckAndInit {
 
 
     private void downloadBinary(String source, String fileName) throws IOException {
-        Log.info("downloading binary from \""+source+"\"");
+        Log.info("downloading binary from \""+source+"\" to \""+fileName+"\"");
         URL website = new URL(source);
         HttpURLConnection connection = (HttpURLConnection) website.openConnection();
         connection.addRequestProperty("User-Agent", "Mozilla/4.76");
