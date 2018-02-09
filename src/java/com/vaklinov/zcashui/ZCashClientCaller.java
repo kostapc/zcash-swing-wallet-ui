@@ -121,7 +121,7 @@ public class ZCashClientCaller
 		String dataDir = ZCashUI.dataDir;
 		String zcparamsDir = ZCashUI.zcparamsDir;
 
-		ArrayList<String> command = new ArrayList<>();
+		List<String> command = new ArrayList<>();
 
 		command.add(zcashd.getCanonicalPath());
 		command.add("-exportdir=" + exportDir);
@@ -144,7 +144,7 @@ public class ZCashClientCaller
 	{
 		String dataDir = ZCashUI.dataDir;
 
-		ArrayList<String> command = new ArrayList<>();
+		List<String> command = new ArrayList<>();
 
 		command.add(zcashcli.getCanonicalPath());
 		if (dataDir != null) {
