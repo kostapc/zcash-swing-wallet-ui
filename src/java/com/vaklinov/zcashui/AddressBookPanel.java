@@ -68,26 +68,28 @@ public class AddressBookPanel extends JPanel {
     private final SendCashPanel sendCashPanel;
     private final JTabbedPane tabs;
     
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
     private JPanel buildButtonsPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
         
-        JButton newContactButton = new JButton("New contact...");
+        JButton newContactButton = new JButton(rb.S("New contact..."));
         newContactButton.addActionListener(new NewContactActionListener());
         panel.add(newContactButton);
                 
-        sendCashButton = new JButton("Send Koto");
+        sendCashButton = new JButton(rb.S("Send Koto"));
         sendCashButton.addActionListener(new SendCashActionListener());
         sendCashButton.setEnabled(false);
         panel.add(sendCashButton);
         
-        copyToClipboardButton = new JButton("Copy address to clipboard");
+        copyToClipboardButton = new JButton(rb.S("Copy address to clipboard"));
         copyToClipboardButton.setEnabled(false);
         copyToClipboardButton.addActionListener(new CopyToClipboardActionListener());
         panel.add(copyToClipboardButton);
         
-        deleteContactButton = new JButton("Delete contact");
+        deleteContactButton = new JButton(rb.S("Delete contact"));
         deleteContactButton.setEnabled(false);
         deleteContactButton.addActionListener(new DeleteAddressActionListener());
         panel.add(deleteContactButton);
@@ -196,8 +198,8 @@ public class AddressBookPanel extends JPanel {
     private class NewContactActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String name = (String) JOptionPane.showInputDialog(AddressBookPanel.this,
-                    "Please enter the name of the contact:",
-                    "Add new contact step 1",
+                    rb.S("Please enter the name of the contact:"),
+                    rb.S("Add new contact step 1"),
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     null,
@@ -209,8 +211,8 @@ public class AddressBookPanel extends JPanel {
             names.add(name);
             
             String address = (String) JOptionPane.showInputDialog(AddressBookPanel.this,
-                    "Pleae enter the t-address or z-address of "+name,
-                    "Add new contact step 2",
+                    rb.S("Pleae enter the t-address or z-address of ")+name,
+                    rb.S("Add new contact step 2"),
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     null,
@@ -256,15 +258,15 @@ public class AddressBookPanel extends JPanel {
             
             JPopupMenu menu = new JPopupMenu();
             
-            JMenuItem sendCash = new JMenuItem("Send Koto to "+entry.name);
+            JMenuItem sendCash = new JMenuItem(rb.S("Send Koto to ")+entry.name);
             sendCash.addActionListener(new SendCashActionListener());
             menu.add(sendCash);
             
-            JMenuItem copyAddress = new JMenuItem("Copy address to clipboard");
+            JMenuItem copyAddress = new JMenuItem(rb.S("Copy address to clipboard"));
             copyAddress.addActionListener(new CopyToClipboardActionListener());
             menu.add(copyAddress);
             
-            JMenuItem deleteEntry = new JMenuItem("Delete "+entry.name+" from contacts");
+            JMenuItem deleteEntry = new JMenuItem(rb.S("Delete ")+entry.name+rb.S(" from contacts"));
             deleteEntry.addActionListener(new DeleteAddressActionListener());
             menu.add(deleteEntry);
             
@@ -293,9 +295,9 @@ public class AddressBookPanel extends JPanel {
                 return;
             }
             String name = entries.get(row).name;
-            sendCashButton.setText("Send Koto to "+name);
+            sendCashButton.setText(rb.S("Send Koto to ")+name);
             sendCashButton.setEnabled(true);
-            deleteContactButton.setText("Delete contact "+name);
+            deleteContactButton.setText(rb.S("Delete contact ")+name);
             deleteContactButton.setEnabled(true);
             copyToClipboardButton.setEnabled(true);
         }
@@ -317,8 +319,8 @@ public class AddressBookPanel extends JPanel {
         @Override
         public String getColumnName(int columnIndex) {
             switch(columnIndex) {
-            case 0 : return "name";
-            case 1 : return "address";
+            case 0 : return rb.S("name");
+            case 1 : return rb.S("address");
             default:
                 throw new IllegalArgumentException("invalid column "+columnIndex);
             }

@@ -61,7 +61,9 @@ public class WalletOperations
 	private ZCashClientCaller         clientCaller;
 	private StatusUpdateErrorReporter errorReporter;
 
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
 
+    
 	public WalletOperations(ZCashUI parent,
 			                JTabbedPane tabs,
 			                DashboardPanel dashboard,
@@ -93,10 +95,10 @@ public class WalletOperations
 			{
 		        JOptionPane.showMessageDialog(
 		            this.parent,
-		            "The wallet.dat file being used is already encrypted. " +
-		            "This \noperation may be performed only on a wallet that " + 
-		            "is not\nyet encrypted!",
-		            "Wallet is already encrypted...",
+		            rb.S("The wallet.dat file being used is already encrypted. ") +
+		            rb.S("This \noperation may be performed only on a wallet that ") + 
+		            rb.S("is not\nyet encrypted!"),
+		            rb.S("Wallet is already encrypted..."),
 		            JOptionPane.ERROR_MESSAGE);
 		        return;
 			}
@@ -128,21 +130,21 @@ public class WalletOperations
 				
 				JOptionPane.showMessageDialog(
 					this.parent, 
-					"An unexpected error occurred while encrypting the wallet!\n" +
-					"It is recommended to stop and restart both kotod and the GUI wallet! \n" +
+					rb.S("An unexpected error occurred while encrypting the wallet!\n") +
+					rb.S("It is recommended to stop and restart both kotod and the GUI wallet! \n") +
 					"\n" + wce.getMessage().replace(",", ",\n"),
-					"Error in encrypting wallet...", JOptionPane.ERROR_MESSAGE);
+					rb.S("Error in encrypting wallet..."), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				"The wallet has been encrypted sucessfully and kotod has stopped.\n" +
-				"The GUI wallet will be stopped as well. Please restart both. In\n" +
-				"addtion the internal wallet keypool has been flushed. You need\n" +
-				"to make a new backup..." +
+				rb.S("The wallet has been encrypted sucessfully and kotod has stopped.\n") +
+				rb.S("The GUI wallet will be stopped as well. Please restart both. In\n") +
+				rb.S("addtion the internal wallet keypool has been flushed. You need\n") +
+				rb.S("to make a new backup...") +
 				"\n",
-				"Wallet is now encrypted...", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("Wallet is now encrypted..."), JOptionPane.INFORMATION_MESSAGE);
 			
 			this.parent.exitProgram();
 			
@@ -160,7 +162,7 @@ public class WalletOperations
 			this.issueBackupDirectoryWarning();
 			
 			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle("Backup wallet to file...");
+			fileChooser.setDialogTitle(rb.S("Backup wallet to file..."));
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fileChooser.setCurrentDirectory(OSUtil.getUserHomeDirectory());
 			 
@@ -189,18 +191,18 @@ public class WalletOperations
 				
 				JOptionPane.showMessageDialog(
 					this.parent, 
-					"An unexpected error occurred while backing up the wallet!" +
+					rb.S("An unexpected error occurred while backing up the wallet!") +
 					"\n" + wce.getMessage().replace(",", ",\n"),
-					"Error in backing up wallet...", JOptionPane.ERROR_MESSAGE);
+					rb.S("Error in backing up wallet..."), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				"The wallet has been backed up successfully to file: " + f.getName() + "\n" +
-				"in the backup directory provided to kotod (-exportdir=<dir>).\nFull path is: " + 
+				rb.S("The wallet has been backed up successfully to file: ") + f.getName() + "\n" +
+				rb.S("in the backup directory provided to kotod (-exportdir=<dir>).\nFull path is: ") + 
 				path,
-				"Wallet is backed up...", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("Wallet is backed up..."), JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (Exception e)
 		{
@@ -218,7 +220,7 @@ public class WalletOperations
 			this.issueBackupDirectoryWarning();
 			
 			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle("Export wallet private keys to file...");
+			fileChooser.setDialogTitle(rb.S("Export wallet private keys to file..."));
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fileChooser.setCurrentDirectory(OSUtil.getUserHomeDirectory());
 			 
@@ -247,21 +249,21 @@ public class WalletOperations
 				
 				JOptionPane.showMessageDialog(
 					this.parent, 
-					"An unexpected error occurred while exporting wallet private keys!" +
+					rb.S("An unexpected error occurred while exporting wallet private keys!") +
 					"\n" + wce.getMessage().replace(",", ",\n"),
-					"Error in exporting wallet private keys...", JOptionPane.ERROR_MESSAGE);
+					rb.S("Error in exporting wallet private keys..."), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				"The wallet private keys have been exported successfully to file:\n" + 
+				rb.S("The wallet private keys have been exported successfully to file:\n") + 
 				f.getName() + "\n" +
-				"in the backup directory provided to kotod (-exportdir=<dir>).\nFull path is: " + 
+				rb.S("in the backup directory provided to kotod (-exportdir=<dir>).\nFull path is: ") + 
 				path + "\n" +
-				"You need to protect this file from unauthorized access. Anyone who\n" +
-				"has access to the private keys can spend the Koto balance!",
-				"Wallet private key export...", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("You need to protect this file from unauthorized access. Anyone who\n") +
+				rb.S("has access to the private keys can spend the Koto balance!"),
+				rb.S("Wallet private key export..."), JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (Exception e)
 		{
@@ -276,12 +278,12 @@ public class WalletOperations
 		
 	    int option = JOptionPane.showConfirmDialog(  
 		    this.parent,
-		    "Private key import is a potentially slow operation. It may take\n" +
-		    "several minutes during which the GUI will be non-responsive.\n" +
-		    "The data to import must be in the format used by the option:\n" +
-		    "\"Export private keys...\"\n\n" +
-		    "Are you sure you wish to import private keys?",
-		    "Private key import notice...",
+		    rb.S("Private key import is a potentially slow operation. It may take\n") +
+		    rb.S("several minutes during which the GUI will be non-responsive.\n") +
+		    rb.S("The data to import must be in the format used by the option:\n") +
+		    rb.S("\"Export private keys...\"\n\n") +
+		    rb.S("Are you sure you wish to import private keys?"),
+		    rb.S("Private key import notice..."),
 		    JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.NO_OPTION)
 		{
@@ -291,7 +293,7 @@ public class WalletOperations
 		try
 		{
 			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle("Import wallet private keys from file...");
+			fileChooser.setDialogTitle(rb.S("Import wallet private keys from file..."));
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			 
 			int result = fileChooser.showOpenDialog(this.parent);
@@ -318,17 +320,17 @@ public class WalletOperations
 				
 				JOptionPane.showMessageDialog(
 					this.parent, 
-					"An unexpected error occurred while importing wallet private keys!" +
+					rb.S("An unexpected error occurred while importing wallet private keys!") +
 					"\n" + wce.getMessage().replace(",", ",\n"),
-					"Error in importing wallet private keys...", JOptionPane.ERROR_MESSAGE);
+					rb.S("Error in importing wallet private keys..."), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				"Wallet private keys have been imported successfully from location:\n" +
+				rb.S("Wallet private keys have been imported successfully from location:\n") +
 				f.getCanonicalPath() + "\n\n",
-				"Wallet private key import...", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("Wallet private key import..."), JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (Exception e)
 		{
@@ -343,9 +345,9 @@ public class WalletOperations
 		{
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				"Please select an address in the \"Own addresses\" tab " +
-				"to view its private key",
-				"Please select an address...", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("Please select an address in the \"Own addresses\" tab ") +
+				rb.S("to view its private key"),
+				rb.S("Please select an address..."), JOptionPane.INFORMATION_MESSAGE);
 			this.tabs.setSelectedIndex(1);
 			return;
 		}
@@ -356,9 +358,9 @@ public class WalletOperations
 		{
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				"Please select an address in the table of addresses " +
-				"to view its private key",
-				"Please select an address...", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("Please select an address in the table of addresses ") +
+				rb.S("to view its private key"),
+				rb.S("Please select an address..."), JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		
@@ -396,12 +398,12 @@ public class WalletOperations
 			
 			JOptionPane.showMessageDialog(
 				this.parent, 
-				(isZAddress ? "Private (z)" : "Transparent (k1,jz)") +  " address:\n" +
+				(isZAddress ? rb.S("Private (z)") : rb.S("Transparent (k1,jz)")) +  rb.S(" address:\n") +
 				address + "\n" + 
-				"has private key:\n" +
+				rb.S("has private key:\n") +
 				privateKey + "\n\n" +
-				"The private key has also been copied to the clipboard.", 
-				"Private key information", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("The private key has also been copied to the clipboard."), 
+				rb.S("Private key information"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex)
 		{
 			this.errorReporter.reportError(ex, false);
@@ -438,18 +440,18 @@ public class WalletOperations
         
         JOptionPane.showMessageDialog(
             this.parent,
-            "For security reasons the wallet may be backed up/private keys exported only if\n" +
-            "the kotod parameter -exportdir=<dir> has been set. If you started kotod \n" +
-            "manually, you ought to have provided this parameter. When kotod is started \n" +
-            "automatically by the GUI wallet the directory provided as parameter to -exportdir\n" +
-            "is the user home directory: " + OSUtil.getUserHomeDirectory().getCanonicalPath() +"\n" +
-            "Please navigate to the directory provided as -exportdir=<dir> and select a\n"+ 
-            "filename in it to backup/export private keys. If you select another directory\n" +
-            "instead, the destination file will still end up in the directory provided as \n" +
-            "-exportdir=<dir>. If this parameter was not provided to kotod, the process\n" +
-            "will fail with a security check error. The filename needs to consist of only\n" + 
-            "alphanumeric characters (e.g. dot is not allowed).\n\n" +
-            "(This message will be shown only once)",
-            "Wallet backup directory information", JOptionPane.INFORMATION_MESSAGE);
+            rb.S("For security reasons the wallet may be backed up/private keys exported only if\n") +
+            rb.S("the kotod parameter -exportdir=<dir> has been set. If you started kotod \n") +
+            rb.S("manually, you ought to have provided this parameter. When kotod is started \n") +
+            rb.S("automatically by the GUI wallet the directory provided as parameter to -exportdir\n") +
+            rb.S("is the user home directory: ") + OSUtil.getUserHomeDirectory().getCanonicalPath() +"\n" +
+            rb.S("Please navigate to the directory provided as -exportdir=<dir> and select a\n") + 
+            rb.S("filename in it to backup/export private keys. If you select another directory\n") +
+            rb.S("instead, the destination file will still end up in the directory provided as \n") +
+            rb.S("-exportdir=<dir>. If this parameter was not provided to kotod, the process\n") +
+            rb.S("will fail with a security check error. The filename needs to consist of only\n") + 
+            rb.S("alphanumeric characters (e.g. dot is not allowed).\n\n") +
+            rb.S("(This message will be shown only once)"),
+            rb.S("Wallet backup directory information"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

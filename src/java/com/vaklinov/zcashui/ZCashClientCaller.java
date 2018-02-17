@@ -1,5 +1,5 @@
 /************************************************************************************************
- *  _________          _     ____          _           __        __    _ _      _   _   _ ___
+" *  _________          _     ____          _           __        __    _ _      _   _   _ ___
  * |__  / ___|__ _ ___| |__ / ___|_      _(_)_ __   __ \ \      / /_ _| | | ___| |_| | | |_ _|
  *   / / |   / _` / __| '_ \\___ \ \ /\ / / | '_ \ / _` \ \ /\ / / _` | | |/ _ \ __| | | || |
  *  / /| |__| (_| \__ \ | | |___) \ V  V /| | | | | (_| |\ V  V / (_| | | |  __/ |_| |_| || |
@@ -61,7 +61,9 @@ import com.vaklinov.zcashui.OSUtil.OS_TYPE;
  */
 public class ZCashClientCaller
 {
-	public static class WalletBalance
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
+    public static class WalletBalance
 	{
 		public double transparentBalance;
 		public double privateBalance;
@@ -129,8 +131,8 @@ public class ZCashClientCaller
 		if ((zcashcli == null) || (!zcashcli.exists()))
 		{
 			throw new IOException(
-				"The Koto installation directory " + installDir + " needs to contain " +
-				"the command line utilities kotod and koto-cli. koto-cli is missing!");
+				rb.S("The Koto installation directory ") + installDir + rb.S(" needs to contain ") +
+				rb.S("the command line utilities kotod and koto-cli. koto-cli is missing!"));
 		}
 		
 		zcashd = new File(dir, OSUtil.getZCashd());
@@ -142,8 +144,8 @@ public class ZCashClientCaller
 		if (zcashd == null || (!zcashd.exists()))
 		{
 		    throw new IOException(
-		    	"The Koto command line utility " + zcashcli.getCanonicalPath() + 
-		    	" was found, but kotod was not found!");
+		    	rb.S("The Koto command line utility ") + zcashcli.getCanonicalPath() + 
+		    	rb.S(" was found, but kotod was not found!"));
 		}
 	}
 
@@ -258,12 +260,12 @@ public class ZCashClientCaller
 
 	    	// Needs to be the same as in getWalletZReceivedTransactions()
 	    	// TODO: some day refactor to use object containers
-	    	strTransactions[i][0] = "\u2606 (Public)";
-	    	strTransactions[i][1] = trans.getString("category", "ERROR!");
+	    	strTransactions[i][0] = rb.S("\u2606 (Public)");
+	    	strTransactions[i][1] = trans.getString("category", rb.S("ERROR!"));
 	    	strTransactions[i][2] = trans.get("confirmations").toString();
 	    	strTransactions[i][3] = trans.get("amount").toString();
 	    	strTransactions[i][4] = trans.get("time").toString();
-	    	strTransactions[i][5] = trans.getString("address", notListed + " (Z Address not listed by wallet!)");
+	    	strTransactions[i][5] = trans.getString("address", notListed + rb.S(" (Z Address not listed by wallet!)"));
 	    	strTransactions[i][6] = trans.get("txid").toString();
 
 	    }
@@ -302,10 +304,10 @@ public class ZCashClientCaller
 		    	String[] currentTransaction = new String[7];
 		    	JsonObject trans = jsonTransactions.get(i).asObject();
 
-		    	String txID = trans.getString("txid", "ERROR!");
+		    	String txID = trans.getString("txid", rb.S("ERROR!"));
 		    	// Needs to be the same as in getWalletPublicTransactions()
 		    	// TODO: some day refactor to use object containers
-		    	currentTransaction[0] = "\u2605 (Private)";
+		    	currentTransaction[0] = rb.S("\u2605 (Private)");
 		    	currentTransaction[1] = "receive";
 		    	// sub call minimize
 		    	TransactonTimeConfirm timeconfirm = this.getWalletTransactionTimeConfirm(txID);
@@ -333,7 +335,7 @@ public class ZCashClientCaller
 	    for (int i = 0; i < jsonUnspentOutputs.size(); i++)
 	    {
 	    	JsonObject outp = jsonUnspentOutputs.get(i).asObject();
-	    	addresses.add(outp.getString("address", "ERROR!"));
+	    	addresses.add(outp.getString("address", rb.S("ERROR!")));
 	    }
 
 	    return addresses.toArray(new String[0]);
@@ -350,7 +352,7 @@ public class ZCashClientCaller
 		for (int i = 0; i < jsonReceivedOutputs.size(); i++)
 		{
 		   	JsonObject outp = jsonReceivedOutputs.get(i).asObject();
-		   	addresses.add(outp.getString("address", "ERROR!"));
+		   	addresses.add(outp.getString("address", rb.S("ERROR!")));
 		}
 
 		return addresses.toArray(new String[0]);
@@ -381,14 +383,14 @@ public class ZCashClientCaller
 			
         for (int i = 0; i < jsonTransactions.size(); i++)
         {
-            if (jsonTransactions.get(i).asObject().getString("txid",  "ERROR!").equals(txID))
+            if (jsonTransactions.get(i).asObject().getString("txid",  rb.S("ERROR!")).equals(txID))
             {
             	if (jsonTransactions.get(i).asObject().get("memo") == null)
             	{
             		return null;
             	}
             	
-                String MemoHex = jsonTransactions.get(i).asObject().getString("memo", "ERROR!");
+                String MemoHex = jsonTransactions.get(i).asObject().getString("memo", rb.S("ERROR!"));
                 // Skip empty memos
                 if (MemoHex.startsWith("f60000"))
                 {
@@ -514,7 +516,7 @@ public class ZCashClientCaller
 		int lastIndex = toManyBeforeReplace.lastIndexOf(amountPattern);
 		if ((firstIndex == -1) || (firstIndex != lastIndex))
 		{
-			throw new WalletCallException("Error in forming z_sendmany command: " + toManyBeforeReplace);
+			throw new WalletCallException(rb.S("Error in forming z_sendmany command: ") + toManyBeforeReplace);
 		}
 
 		DecimalFormatSymbols decSymbols = new DecimalFormatSymbols(Locale.ROOT);
@@ -553,7 +555,7 @@ public class ZCashClientCaller
 		BigDecimal difference = bdAmout.subtract(bdFinalAmount).abs();
 		if (difference.compareTo(new BigDecimal("0.000000015")) >= 0)
 		{
-			throw new WalletCallException("Error in forming z_sendmany command: Amount differs after formatting: " + 
+			throw new WalletCallException(rb.S("Error in forming z_sendmany command: Amount differs after formatting: ") + 
 		                                  amount + " | " + toManyArrayStr);
 		}
 
@@ -569,7 +571,7 @@ public class ZCashClientCaller
 		if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:") ||
 			strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
 		{
-		  	throw new WalletCallException("Error response from wallet: " + strResponse);
+		  	throw new WalletCallException(rb.S("Error response from wallet: ") + strResponse);
 		}
 
 		Log.info("Sending cash with the following command: " +
@@ -589,7 +591,7 @@ public class ZCashClientCaller
 			"z_getoperationstatus", wrapStringParameter("[\"" + opID + "\"]"));
 		JsonObject jsonStatus = response.get(0).asObject();
 
-		String status = jsonStatus.getString("status", "ERROR");
+		String status = jsonStatus.getString("status", rb.S("ERROR"));
 
 		Log.info("Operation " + opID + " status is " + response + ".");
 
@@ -603,7 +605,7 @@ public class ZCashClientCaller
 			return false;
 		} else
 		{
-			throw new WalletCallException("Unexpected status response from wallet: " + response.toString());
+			throw new WalletCallException(rb.S("Unexpected status response from wallet: ") + response.toString());
 		}
 	}
 
@@ -615,7 +617,7 @@ public class ZCashClientCaller
 			"z_getoperationstatus", wrapStringParameter("[\"" + opID + "\"]"));
 		JsonObject jsonStatus = response.get(0).asObject();
 
-		String status = jsonStatus.getString("status", "ERROR");
+		String status = jsonStatus.getString("status", rb.S("ERROR"));
 
 		Log.info("Operation " + opID + " status is " + response + ".");
 
@@ -627,7 +629,7 @@ public class ZCashClientCaller
 			return false;
 		} else
 		{
-			throw new WalletCallException("Unexpected final operation status response from wallet: " + response.toString());
+			throw new WalletCallException(rb.S("Unexpected final operation status response from wallet: ") + response.toString());
 		}
 	}
 
@@ -641,7 +643,7 @@ public class ZCashClientCaller
 		JsonObject jsonStatus = response.get(0).asObject();
 
 		JsonObject jsonError = jsonStatus.get("error").asObject();
-		return jsonError.getString("message", "ERROR!");
+		return jsonError.getString("message", rb.S("ERROR!"));
 	}
 
 
@@ -670,7 +672,7 @@ public class ZCashClientCaller
 		// Response is expected to be empty
 		if (response.trim().length() > 0)
 		{
-			throw new WalletCallException("Unexpected response from wallet: " + response);
+			throw new WalletCallException(rb.S("Unexpected response from wallet: ") + response);
 		}
 	}
 
@@ -686,7 +688,7 @@ public class ZCashClientCaller
 		// Response is expected to be empty
 		if (response.trim().length() > 0)
 		{
-			throw new WalletCallException("Unexpected response from wallet: " + response);
+			throw new WalletCallException(rb.S("Unexpected response from wallet: ") + response);
 		}
 	}
 
@@ -720,29 +722,29 @@ public class ZCashClientCaller
 
    			 JsonObject respObject = response.asObject();
    			 if ((respObject.getDouble("code", -1) == -15) &&
-   				 (respObject.getString("message", "ERR").indexOf("unencrypted wallet") != -1))
+   				 (respObject.getString("message", rb.S("ERR")).indexOf("unencrypted wallet") != -1))
    			 {
    				 // Obviously unencrupted
    				 return false;
    			 } else
    			 {
-   	    		 throw new WalletCallException("Unexpected response from wallet: " + strResult);
+   	    		 throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
    			 }
     	 } else if (strResult.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
     	 {
    			 JsonObject respObject = Util.getJsonErrorMessage(strResult);
    			 if ((respObject.getDouble("code", -1) == -15) &&
-   				 (respObject.getString("message", "ERR").indexOf("unencrypted wallet") != -1))
+   				 (respObject.getString("message", rb.S("ERR")).indexOf("unencrypted wallet") != -1))
    			 {
    				 // Obviously unencrupted
    				 return false;
    			 } else
    			 {
-   	    		 throw new WalletCallException("Unexpected response from wallet: " + strResult);
+   	    		 throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
    			 }
     	 } else
     	 {
-    		 throw new WalletCallException("Unexpected response from wallet: " + strResult);
+    		 throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
     	 }
     }
 
@@ -851,27 +853,27 @@ public class ZCashClientCaller
 
   			 JsonObject respObject = response.asObject();
   			 if ((respObject.getDouble("code", +123) == -1) &&
-  				 (respObject.getString("message", "ERR").indexOf("wrong network type") != -1))
+  				 (respObject.getString("message", rb.S("ERR")).indexOf("wrong network type") != -1))
   			 {
   				 // Obviously T address - do nothing here
   			 } else
   			 {
-  	    		 throw new WalletCallException("Unexpected response from wallet: " + strResult);
+  	    		 throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
   			 }
 		} else if (strResult.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
 		{
  			 JsonObject respObject = Util.getJsonErrorMessage(strResult);
  			 if ((respObject.getDouble("code", +123) == -1) &&
- 				 (respObject.getString("message", "ERR").indexOf("wrong network type") != -1))
+ 				 (respObject.getString("message", rb.S("ERR")).indexOf("wrong network type") != -1))
  			 {
  				 // Obviously T address - do nothing here
  			 } else
  			 {
- 	    		 throw new WalletCallException("Unexpected response from wallet: " + strResult);
+ 	    		 throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
  			 }
 		} else
 		{
-			throw new WalletCallException("Unexpected response from wallet: " + strResult);
+			throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
 		}
 		
 		// Second try a T key
@@ -883,7 +885,7 @@ public class ZCashClientCaller
 		}
 		
 		// Obviously an error
-		throw new WalletCallException("Unexpected response from wallet: " + strResult);
+		throw new WalletCallException(rb.S("Unexpected response from wallet: ") + strResult);
 	}
 	
 
@@ -897,7 +899,7 @@ public class ZCashClientCaller
 			return response.asObject();
 		} else
 		{
-			throw new WalletCallException("Unexpected non-object response from wallet: " + response.toString());
+			throw new WalletCallException(rb.S("Unexpected non-object response from wallet: ") + response.toString());
 		}
 
 	}
@@ -920,7 +922,7 @@ public class ZCashClientCaller
 			return response.asArray();
 		} else
 		{
-			throw new WalletCallException("Unexpected non-array response from wallet: " + response.toString());
+			throw new WalletCallException(rb.S("Unexpected non-array response from wallet: ") + response.toString());
 		}
 	}
 
@@ -985,7 +987,7 @@ public class ZCashClientCaller
 		if (strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error:")       ||
 			strResponse.trim().toLowerCase(Locale.ROOT).startsWith("error code:"))
 		{
-			throw new WalletCallException("Error response from wallet: " + strResponse);
+			throw new WalletCallException(rb.S("Error response from wallet: ") + strResponse);
 		}
 
 		return strResponse;
