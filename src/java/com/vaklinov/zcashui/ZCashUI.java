@@ -191,14 +191,14 @@ public class ZCashUI
         String lang = ResourceBundleUTF8.getLang();
         switch (lang) {
         case "Default":
-        	menuItemLangDefault.setSelected(true);
-        	break;
+        		menuItemLangDefault.setSelected(true);
+        		break;
         case "ja":
-        	menuItemLangJa.setSelected(true);
-        	break;
+        		menuItemLangJa.setSelected(true);
+        		break;
         case "en":
-        	menuItemLangEn.setSelected(true);
-        	break;
+        		menuItemLangEn.setSelected(true);
+        		break;
         }
         mb.add(language);
 
@@ -311,21 +311,25 @@ public class ZCashUI
            }
        );
        
-       ItemListener itemlistenr = new ItemListener() {
-   	    @Override
-    	    public void itemStateChanged(ItemEvent item) {
-    	        if (menuItemLangDefault.isSelected()) {
-    	        	ResourceBundleUTF8.setLang("Default");
-    	        } else if (menuItemLangEn.isSelected()) {
-    	        	ResourceBundleUTF8.setLang("en");
-    	        } else if (menuItemLangJa.isSelected()) {
-    	        	ResourceBundleUTF8.setLang("ja");
-    	        }
-    	    }
+       ActionListener itemlistenr = new ActionListener() {
+    	   		@Override
+    	   		public void actionPerformed(ActionEvent e) {
+    	   			if (menuItemLangDefault.isSelected()) {
+    	   				ResourceBundleUTF8.setLang("Default");
+    	   			} else if (menuItemLangEn.isSelected()) {
+    	   				ResourceBundleUTF8.setLang("en");
+    	   			} else if (menuItemLangJa.isSelected()) {
+    	   				ResourceBundleUTF8.setLang("ja");
+    	   			}
+    	   			JOptionPane.showMessageDialog(
+    	   					ZCashUI.this.getRootPane().getParent(),
+    	   					rb.S("Please restart to activate the new GUI settings\n"),
+    	   					rb.S("Language"), JOptionPane.INFORMATION_MESSAGE);
+    	   		}
 	   };
-       menuItemLangDefault.addItemListener(itemlistenr);
-       menuItemLangEn.addItemListener(itemlistenr);
-       menuItemLangJa.addItemListener(itemlistenr);
+       menuItemLangDefault.addActionListener(itemlistenr);
+       menuItemLangEn.addActionListener(itemlistenr);
+       menuItemLangJa.addActionListener(itemlistenr);
         // Close operation
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter()
