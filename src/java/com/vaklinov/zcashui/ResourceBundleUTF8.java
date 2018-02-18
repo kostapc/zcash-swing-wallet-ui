@@ -47,6 +47,7 @@ public class ResourceBundleUTF8 extends ResourceBundle {
 			ResourceBundle bundle = ResourceBundle.getBundle(bundleFile, myLocale, UTF8_ENCODING_CONTROL);
 			super.setParent(bundle);
 		} catch (MissingResourceException e) {
+			Log.info("Cannot load resource file: " + myLocale.getLanguage());
 		}
 	}
 
