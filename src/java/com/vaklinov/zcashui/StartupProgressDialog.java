@@ -54,7 +54,7 @@ public class StartupProgressDialog extends JFrame {
     {
         this.clientCaller = clientCaller;
         
-        URL iconUrl = this.getClass().getClassLoader().getResource("images/koto-logo-color-large.png");
+        URL iconUrl = this.getClass().getClassLoader().getResource("images/koto-logo-color-large-font.png");
         imageIcon = new ImageIcon(iconUrl);
         imageLabel.setIcon(imageIcon);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 0, 16));
@@ -63,13 +63,13 @@ public class StartupProgressDialog extends JFrame {
         southPanel.setLayout(southPanelLayout);
         southPanel.setBorder(BorderFactory.createEmptyBorder(0, 16, 12, 16));
         contentPane.add(imageLabel, BorderLayout.NORTH);
-		JLabel zcashWalletLabel = new JLabel(
+		/*JLabel zcashWalletLabel = new JLabel(
 			"<html><span style=\"font-weight:bold;font-family : 'Helvetica';font-size:3.4em\">" + 
             rb.S("Koto Wallet</span></html>"));
-		zcashWalletLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 2, 16));
+		zcashWalletLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 2, 16));*/
 		// todo - place in a panel with flow center
 		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
-		tempPanel.add(zcashWalletLabel);
+		//tempPanel.add(zcashWalletLabel);
 		contentPane.add(tempPanel, BorderLayout.CENTER);
         contentPane.add(southPanel, BorderLayout.SOUTH);
         progressBar.setIndeterminate(true);
