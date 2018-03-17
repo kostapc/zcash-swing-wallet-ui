@@ -11,6 +11,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Locale;
 
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -39,6 +45,8 @@ public class StartupProgressDialog extends JFrame implements UsersMessageConsole
     private JProgressBar progressBar = new JProgressBar();
     private ImageIcon imageIcon;
     
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
     private final ZCashClientCaller clientCaller;
     
     public StartupProgressDialog(ZCashClientCaller clientCaller, String text)
@@ -56,7 +64,7 @@ public class StartupProgressDialog extends JFrame implements UsersMessageConsole
         contentPane.add(imageLabel, BorderLayout.NORTH);
 		JLabel zcashWalletLabel = new JLabel(
 			"<html><span style=\"font-weight:bold;font-family : 'Helvetica';font-size:3.4em\">" + 
-            "Koto Wallet</span></html>");
+            rb.S("Koto Wallet</span></html>"));
 		zcashWalletLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 2, 16));
 		// todo - place in a panel with flow center
 		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
@@ -65,7 +73,9 @@ public class StartupProgressDialog extends JFrame implements UsersMessageConsole
         contentPane.add(southPanel, BorderLayout.SOUTH);
         progressBar.setIndeterminate(true);
         southPanel.add(progressBar, BorderLayout.NORTH);
-        progressLabel.setText(text);
+
+        progressLabel.setText(rb.S("Starting..."));
+
         southPanel.add(progressLabel, BorderLayout.SOUTH);
         
         pack();

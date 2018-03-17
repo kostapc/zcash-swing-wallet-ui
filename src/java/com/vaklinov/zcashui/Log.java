@@ -43,7 +43,7 @@ public class Log
 {
 	private static PrintStream fileOut;
 
-	static 
+    static 
 	{
 		try
 		{

@@ -74,6 +74,7 @@ public class AddressesPanel
 	
 	private long lastInteractiveRefresh;
 	
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
 
 	public AddressesPanel(ZCashClientCaller clientCaller, StatusUpdateErrorReporter errorReporter)
 		throws IOException, InterruptedException, WalletCallException
@@ -93,12 +94,12 @@ public class AddressesPanel
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
 		buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		JButton newTAddressButton = new JButton("New Transparent (k1,jz) address");
+		JButton newTAddressButton = new JButton(rb.S("New Transparent (k1,jz) address"));
 		buttonPanel.add(newTAddressButton);
-		JButton newZAddressButton = new JButton("New Private (z) address");
+		JButton newZAddressButton = new JButton(rb.S("New Private (z) address"));
 		buttonPanel.add(newZAddressButton);
 		buttonPanel.add(new JLabel("           "));
-		JButton refreshButton = new JButton("Refresh");
+		JButton refreshButton = new JButton(rb.S("Refresh"));
 		buttonPanel.add(refreshButton);
 		
 		addressesPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -115,10 +116,10 @@ public class AddressesPanel
 		warningPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		JLabel warningL = new JLabel(
 				"<html><span style=\"font-size:0.8em;\">" +
-				"* If the balance of an address is flagged as not confirmed, the address is currently taking " +
-				"part in a transaction. The shown balance then is the expected value it will have when " +
-				"the transaction is confirmed. " +
-				"The average confirmation time is 2.5 min." +
+				rb.S("* If the balance of an address is flagged as not confirmed, the address is currently taking ") +
+				rb.S("part in a transaction. The shown balance then is the expected value it will have when ") +
+				rb.S("the transaction is confirmed. ") +
+				rb.S("The average confirmation time is 2.5 min.") +
 			    "</span>");
 		warningPanel.add(warningL, BorderLayout.NORTH);
 		addressesPanel.add(warningPanel, BorderLayout.NORTH);
@@ -252,9 +253,9 @@ public class AddressesPanel
 						
 			JOptionPane.showMessageDialog(
 				this.getRootPane().getParent(), 
-				"A new " + (isZAddress ? "Private (z)" : "Transparent (k1,jz)") 
-				+ " address has been created cuccessfully:\n" + address, 
-				"Address created", JOptionPane.INFORMATION_MESSAGE);
+				rb.S("A new ") + (isZAddress ? "Private (z)" : "Transparent (k1,jz)") 
+				+ rb.S(" address has been created cuccessfully:\n") + address, 
+				rb.S("Address created"), JOptionPane.INFORMATION_MESSAGE);
 			
 			this.updateWalletAddressBalanceTableInteractive();
 		} catch (Exception e)
@@ -317,7 +318,7 @@ public class AddressesPanel
 	private JTable createAddressBalanceTable(String rowData[][])
 		throws WalletCallException, IOException, InterruptedException
 	{
-		String columnNames[] = { "Balance", "Confirmed?", "Address" };
+		String columnNames[] = { rb.S("Balance"), rb.S("Confirmed?"), rb.S("Address") };
         JTable table = new AddressTable(rowData, columnNames, this.clientCaller);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         table.getColumnModel().getColumn(0).setPreferredWidth(160);

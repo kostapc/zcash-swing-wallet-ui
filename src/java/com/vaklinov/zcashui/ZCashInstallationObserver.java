@@ -46,7 +46,9 @@ import com.vaklinov.zcashui.OSUtil.OS_TYPE;
  */
 public class ZCashInstallationObserver
 {
-	public static class DaemonInfo
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
+    public static class DaemonInfo
 	{
 		public DAEMON_STATUS status;
 		public double residentSizeMB;
@@ -71,21 +73,10 @@ public class ZCashInstallationObserver
 		if (!dir.exists() || dir.isFile())
 		{
 			throw new InstallationDetectionException(
-					"The Koto installation directory " + installDir + " does not exist or is not " +
-							"a directory or is otherwise inaccessible to the wallet!");
-		}
 
-		for(String path: new String[] {
-			KotoDaemonConfig.config().getConfigFilePath(),
-			KotoDaemonConfig.config().getSproutProvingFilePath(),
-			KotoDaemonConfig.config().getSproutVerifyingFilePath()
-		}) {
-			File confFile = new File(path);
-			if(!confFile.exists()) {
-				throw new InstallationDetectionException(
-						"The Koto necessary file " + path + " does not exist or is otherwise inaccessible to the wallet!"
-				);
-			}
+				rb.S("The Koto installation directory ") + installDir + rb.S(" does not exist or is not ") +
+		    rb.S("a directory or is otherwise inaccessible to the wallet!"));
+
 		}
 
 		// Detect daemon and client tools installation
@@ -106,10 +97,10 @@ public class ZCashInstallationObserver
 		if ((zcashd == null) || (zcashcli == null) || (!zcashd.exists()) || (!zcashcli.exists()))
 		{
 			throw new InstallationDetectionException(
-				"The Koto GUI Wallet installation directory " + installDir + " needs\nto contain " +
-				"the command line utilities kotod and koto-cli. At least one of them is missing! \n" +
-				"Please place files KotoSwingWalletUI.jar, " + OSUtil.getZCashCli() + ", " + 
-				OSUtil.getZCashd() + " in the same directory.");
+				rb.S("The Koto GUI Wallet installation directory ") + installDir + rb.S(" needs\nto contain ") +
+				rb.S("the command line utilities kotod and koto-cli. At least one of them is missing! \n") +
+				rb.S("Please place files KotoSwingWalletUI.jar, ") + OSUtil.getZCashCli() + ", " + 
+				OSUtil.getZCashd() + rb.S(" in the same directory."));
 		}
 	}
 
