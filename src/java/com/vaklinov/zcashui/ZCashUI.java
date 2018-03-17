@@ -91,7 +91,10 @@ public class ZCashUI
     private AddressesPanel   addresses;
     private SendCashPanel    sendPanel;
     private AddressBookPanel addressBookPanel;
-    
+
+    public static String dataDir;
+    public static String zcparamsDir;
+
     JTabbedPane tabs;
 
     public ZCashUI(StartupProgressDialog progressDialog)
@@ -396,7 +399,21 @@ public class ZCashUI
 	                };
 	            }
             }
-            
+
+            for (String arg : argv)
+            {
+                String[] param = arg.split("=");
+                if ("-datadir".equals(param[0]))
+                {
+                    Log.info("Data directory: " + param[1]);
+                    dataDir = param[1];
+                } else if("-zcparamsdir".equals(param[0]))
+                {
+                    Log.info("Zcash Params directory: " + param[1]);
+                    zcparamsDir = param[1];
+                }
+            }
+
             // If zcashd is currently not running, do a startup of the daemon as a child process
             // It may be started but not ready - then also show dialog
             ZCashInstallationObserver initialInstallationObserver = 
