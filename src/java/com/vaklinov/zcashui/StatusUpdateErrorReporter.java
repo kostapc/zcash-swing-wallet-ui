@@ -41,7 +41,9 @@ public class StatusUpdateErrorReporter
 	private JFrame parent;
 	private long lastReportedErrroTime = 0;
 	
-	public StatusUpdateErrorReporter(JFrame parent)
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
+    public StatusUpdateErrorReporter(JFrame parent)
 	{
 		this.parent = parent;
 	}
@@ -71,10 +73,10 @@ public class StatusUpdateErrorReporter
 		
 		JOptionPane.showMessageDialog(
 			parent, 
-			"An unexpected error occurred when updating the GUI wallet\n" +
-			"state. Please ensure that the Koto daemon is running. \n" +
+			rb.S("An unexpected error occurred when updating the GUI wallet\n") +
+			rb.S("state. Please ensure that the Koto daemon is running. \n") +
 			"\n" +
 			e.getMessage(),
-			"Error in updating status.", JOptionPane.ERROR_MESSAGE);
+			rb.S("Error in updating status."), JOptionPane.ERROR_MESSAGE);
 	}
 }
