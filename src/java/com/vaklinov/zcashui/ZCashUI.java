@@ -113,7 +113,7 @@ public class ZCashUI
     public ZCashUI(StartupProgressDialog progressDialog)
         throws IOException, InterruptedException, WalletCallException
     {
-        super("Swing Wallet UI for Koto\u00AE - 0.73 (beta)");
+        super("Swing Wallet UI for Koto\u00AE - 0.74 (beta)");
         
         if (progressDialog != null)
         {

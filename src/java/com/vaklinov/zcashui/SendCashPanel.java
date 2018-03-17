@@ -204,11 +204,11 @@ public class SendCashPanel
 		warningPanel.setLayout(new BorderLayout(7, 3));
 		JLabel warningL = new JLabel(
 				"<html><span style=\"font-size:0.8em;\">" +
-				rb.S(" * When sending cash from a T (Transparent) address, the remining unspent balance is sent to another ") +
-				rb.S("auto-generated T address. When sending from a Z (Private) address, the remining unspent balance remains with ") +
-				rb.S("the Z address. In both cases the original sending address cannot be used for sending again until the ") +
+				rb.S(" * When sending cash from a Transparent(k1,jz) address, the remining unspent balance is sent to another ") +
+				rb.S("auto-generated k1,jz address. When sending from a Private(z) address, the remining unspent balance remains with ") +
+				rb.S("the z address. In both cases the original sending address cannot be used for sending again until the ") +
 				rb.S("transaction is confirmed. The address is temporarily removed from the list! Freshly mined coins may only ")+
-				rb.S("be sent to a Z (Private) address.") +
+				rb.S("be sent to a Private(z) address.") +
 			    "</span>");
 		warningPanel.add(warningL, BorderLayout.NORTH);
 		sendCashPanel.add(warningPanel);
