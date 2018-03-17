@@ -344,12 +344,12 @@ public class ZCashClientCaller
 		    	// Needs to be the same as in getWalletPublicTransactions()
 		    	// TODO: some day refactor to use object containers
 		    	currentTransaction[0] = rb.S("\u2605 (Private)");
-		    	currentTransaction[1] = "receive";
+		    	currentTransaction[3] = "receive";
 		    	// sub call minimize
 		    	TransactonTimeConfirm timeconfirm = this.getWalletTransactionTimeConfirm(txID);
-		    	currentTransaction[2] = timeconfirm.getTransactionConfirm();
-		    	currentTransaction[3] = trans.get("amount").toString();
-		    	currentTransaction[4] = timeconfirm.getTransactionTime();
+		    	currentTransaction[1] = timeconfirm.getTransactionConfirm();
+		    	currentTransaction[4] = trans.get("amount").toString();
+		    	currentTransaction[2] = timeconfirm.getTransactionTime();
 		    	currentTransaction[5] = zAddress;
 		    	currentTransaction[6] = trans.get("txid").toString();
 

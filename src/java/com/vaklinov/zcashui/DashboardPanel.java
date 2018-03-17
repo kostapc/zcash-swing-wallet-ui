@@ -110,7 +110,7 @@ public class DashboardPanel
 
 		// Build content
 		JPanel dashboard = this;
-		dashboard.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+		dashboard.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		dashboard.setLayout(new BorderLayout(0, 0));
 
 		// Upper panel with wallet balance
@@ -119,13 +119,13 @@ public class DashboardPanel
 		balanceStatusPanel.setLayout(new BorderLayout(3, 3)); 
 		//balanceStatusPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 11));
+		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 16));
 		JLabel logoLabel = new JLabel(new ImageIcon(
 			this.getClass().getClassLoader().getResource("images/koto-logo-color-square47.png")));
 		tempPanel.add(logoLabel);
 		tempPanel.add(new JLabel(" "));
 		JLabel zcLabel = new JLabel(rb.S("Koto Wallet  "));
-		zcLabel.setFont(new Font("Helvetica", Font.BOLD, 32));
+		zcLabel.setFont(new Font("Helvetica", Font.BOLD, 34));
 		//zcLabel.setForeground(Color.RED);
 		tempPanel.add(zcLabel);
 		tempPanel.setToolTipText(rb.S("Powered by Koto\u00AE"));
@@ -519,14 +519,14 @@ public class DashboardPanel
 
 		String text =
 			"<html>" + 
-		    "<span style=\"font-family:monospace;font-size:1em;" + color1 + rb.S("\">Transparent (k1,jz) balance : <span style=\"font-size:1.1em;\">") + 
-				transparentUCBalance + " KOTO </span></span><br/> " +
-			"<span style=\"font-family:monospace;font-size:1em;" + color2 + rb.S("\">Private (z) balance &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.1em;\">") + 
-		    	privateUCBalance + " KOTO </span></span><br/> " +
-			"<span style=\"font-family:monospace;font-size:1em;" + color3 + rb.S("\">Total (z+k1,jz) balance &nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.35em;\">") + 
-		    	totalUCBalance + " KOTO </span></span>" +
-			"<br/>  </html>";
-		
+		    "<TABLE border=0 cellspacing=0>" +
+			"<TR><TD><span style=\"font-size:1.1em;" + color1 + rb.S("\">Transparent (k1.jz) balance</span></TD><TD>:</TD><td align=\"right\"><span style=\"font-size:1.1em;") + color1 + "\">" + transparentUCBalance + " KOTO </span></TD></TR>" +
+			
+        	"<TR><TD><span style=\"font-size:1.1em;" + color2 + rb.S("\">Private (z) balance</span></TD><TD>:</TD><td align= \"right\" <span style=\"font-size:1.1em;") + color2 + "\">" + privateUCBalance + " KOTO </span></TD></TR>" +
+
+        	"<TR><TD><span style=\"font-weight:bold;font-size:1.2em;" + color3 + rb.S("\">Total (z+k1.jz) balance</span></TD><TD>:</TD><td align=\"right\"><span style=\"font-weight:bold;font-size:1.2em;") + color3 + "\">" + totalUCBalance + " KOTO </span></TD></TR>" +
+        	"</TABLE>" + "</html>";
+
 		this.walletBalanceLabel.setText(text);
 		
 		String toolTip = null;
@@ -583,10 +583,10 @@ public class DashboardPanel
         	rowData, columnNames, this.parentFrame, this.clientCaller); 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         table.getColumnModel().getColumn(0).setPreferredWidth(190);
-        table.getColumnModel().getColumn(1).setPreferredWidth(145);
-        table.getColumnModel().getColumn(2).setPreferredWidth(170);
-        table.getColumnModel().getColumn(3).setPreferredWidth(210);
-        table.getColumnModel().getColumn(4).setPreferredWidth(405);
+        table.getColumnModel().getColumn(3).setPreferredWidth(145);
+        table.getColumnModel().getColumn(1).setPreferredWidth(170);
+        table.getColumnModel().getColumn(4).setPreferredWidth(210);
+        table.getColumnModel().getColumn(2).setPreferredWidth(405);
         table.getColumnModel().getColumn(5).setPreferredWidth(800);
 
         return table;
@@ -619,15 +619,15 @@ public class DashboardPanel
 			public int compare(String[] o1, String[] o2)
 			{
 				Date d1 = new Date(0);
-				if (!o1[4].equals("N/A"))
+				if (!o1[2].equals("N/A"))
 				{
-					d1 = new Date(Long.valueOf(o1[4]).longValue() * 1000L);
+					d1 = new Date(Long.valueOf(o1[2]).longValue() * 1000L);
 				}
 
 				Date d2 = new Date(0);
-				if (!o2[4].equals("N/A"))
+				if (!o2[2].equals("N/A"))
 				{
-					d2 = new Date(Long.valueOf(o2[4]).longValue() * 1000L);
+					d2 = new Date(Long.valueOf(o2[2]).longValue() * 1000L);
 				}
 
 				if (d1.equals(d2))
@@ -660,50 +660,50 @@ public class DashboardPanel
 		for (String[] trans : allTransactions)
 		{
 			// Direction
-			if (trans[1].equals("receive"))
+			if (trans[3].equals("receive"))
 			{
-				trans[1] = "\u21E8 IN";
-			} else if (trans[1].equals("send"))
+				trans[3] = "\u21E8 IN";
+			} else if (trans[3].equals("send"))
 			{
-				trans[1] = "\u21E6 OUT";
-			} else if (trans[1].equals("generate"))
+				trans[3] = "\u21E6 OUT";
+			} else if (trans[3].equals("generate"))
 			{
-				trans[1] = "\u2692\u2699 MINED";
-			} else if (trans[1].equals("immature"))
+				trans[3] = "\u2692\u2699 MINED";
+			} else if (trans[3].equals("immature"))
 			{
-				trans[1] = "\u2696 Immature";
+				trans[3] = "\u2696 Immature";
 			};
 
 			// Date
-			if (!trans[4].equals("N/A"))
+			if (!trans[2].equals("N/A"))
 			{
-				trans[4] = new Date(Long.valueOf(trans[4]).longValue() * 1000L).toLocaleString();
+				trans[2] = new Date(Long.valueOf(trans[2]).longValue() * 1000L).toLocaleString();
 			}
 			
 			// Amount
 			try
 			{
-				double amount = Double.valueOf(trans[3]);
+				double amount = Double.valueOf(trans[4]);
 				if (amount < 0d)
 				{
 					amount = -amount;
 				}
-				trans[3] = df.format(amount);
+				trans[4] = df.format(amount);
 			} catch (NumberFormatException nfe)
 			{
-				Log.error("Error occurred while formatting amount: " + trans[3] + 
+				Log.error("Error occurred while formatting amount: " + trans[4] + 
 						           " - " + nfe.getMessage() + "!");
 			}
 			
 			// Confirmed?
 			try
 			{
-				boolean isConfirmed = !trans[2].trim().equals("0"); 
+				boolean isConfirmed = !trans[1].trim().equals("0"); 
 				
-				trans[2] = isConfirmed ? ("Yes " + confirmed) : ("No  " + notConfirmed);
+				trans[1] = isConfirmed ? ("Yes " + confirmed) : ("No  " + notConfirmed);
 			} catch (NumberFormatException nfe)
 			{
-				Log.error("Error occurred while formatting confirmations: " + trans[2] + 
+				Log.error("Error occurred while formatting confirmations: " + trans[1] + 
 						           " - " + nfe.getMessage() + "!");
 			}
 		}
