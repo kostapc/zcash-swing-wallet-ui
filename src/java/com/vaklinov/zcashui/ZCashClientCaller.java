@@ -297,10 +297,10 @@ public class ZCashClientCaller
 	    	// Needs to be the same as in getWalletZReceivedTransactions()
 	    	// TODO: some day refactor to use object containers
 	    	strTransactions[i][0] = rb.S("\u2606 (Public)");
-	    	strTransactions[i][1] = trans.getString("category", rb.S("ERROR!"));
-	    	strTransactions[i][2] = trans.get("confirmations").toString();
-	    	strTransactions[i][3] = trans.get("amount").toString();
-	    	strTransactions[i][4] = trans.get("time").toString();
+	    	strTransactions[i][3] = trans.getString("category", rb.S("ERROR!"));
+	    	strTransactions[i][1] = trans.get("confirmations").toString();
+	    	strTransactions[i][4] = trans.get("amount").toString();
+	    	strTransactions[i][2] = trans.get("time").toString();
 	    	strTransactions[i][5] = trans.getString("address", notListed + rb.S(" (Z Address not listed by wallet!)"));
 	    	strTransactions[i][6] = trans.get("txid").toString();
 

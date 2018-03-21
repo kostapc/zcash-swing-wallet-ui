@@ -578,7 +578,7 @@ public class DashboardPanel
 	private JTable createTransactionsTable(String rowData[][])
 		throws WalletCallException, IOException, InterruptedException
 	{
-		String columnNames[] = { rb.S("Type"), rb.S("Direction"), rb.S("Confirmed?"), rb.S("Amount"), rb.S("Date"), rb.S("Destination Address")};
+		String columnNames[] = { rb.S("Type"), rb.S("Confirmed?"), rb.S("Date"), rb.S("Direction"), rb.S("Amount"), rb.S("Destination Address")};
         JTable table = new TransactionTable(
         	rowData, columnNames, this.parentFrame, this.clientCaller); 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
