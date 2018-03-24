@@ -69,8 +69,6 @@ import com.vaklinov.zcashui.ZCashInstallationObserver.DAEMON_STATUS;
 import com.vaklinov.zcashui.ZCashInstallationObserver.DaemonInfo;
 import com.vaklinov.zcashui.ZCashInstallationObserver.InstallationDetectionException;
 
-import javafx.scene.chart.BubbleChart;
-
 
 /**
  * Main ZCash Window.
