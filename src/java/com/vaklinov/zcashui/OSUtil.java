@@ -182,7 +182,6 @@ public class OSUtil
 
 
 	public static File getUserHomeDirectory()
-		throws IOException
 	{
         return new File(System.getProperty("user.home"));
 	}
@@ -206,7 +205,6 @@ public class OSUtil
 	}
 
 	public static String getBlockchainDirectory()
-		throws IOException
 	{
 		if(ZCashUI.dataDir != null){
 			return ZCashUI.dataDir;
