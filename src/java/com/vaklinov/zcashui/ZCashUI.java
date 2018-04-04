@@ -368,7 +368,7 @@ public class ZCashUI
 
                 JOptionPane.showMessageDialog(
                     ZCashUI.this.getRootPane().getParent(),
-                    rb.S("The Koto GUI Wallet is currently considered experimental. Use of this software\n") +
+                    rb.S("The ZCash GUI Wallet is currently considered experimental. Use of this software\n") +
                     rb.S("comes at your own risk! Be sure to read the list of known issues and limitations\n") +
                     rb.S("at this page: https://github.com/vaklinov/zcash-swing-wallet-ui\n\n") +
                     rb.S("This program is not officially endorsed by or associated with the ZCash project\n") +
@@ -383,6 +383,7 @@ public class ZCashUI
                     rb.S("THE SOFTWARE.\n\n") +
                     rb.S("(This message will be shown only once)"),
                     rb.S("Disclaimer"), JOptionPane.INFORMATION_MESSAGE);
+
             }
         });
         

@@ -205,11 +205,12 @@ public class OSUtil
         }
 	}
 
-	public static String getBlockchainDirectory() {
-
-        if(ZCashUI.dataDir != null){
-            return ZCashUI.dataDir;
-        }
+	public static String getBlockchainDirectory()
+		throws IOException
+	{
+		if(ZCashUI.dataDir != null){
+			return ZCashUI.dataDir;
+		}
 
 		OS_TYPE os = getOSType();
         try {

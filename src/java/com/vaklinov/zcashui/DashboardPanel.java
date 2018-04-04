@@ -126,6 +126,7 @@ public class DashboardPanel
 		);
 		tempPanel.add(logoLabel);
 		tempPanel.add(new JLabel(" "));
+
 		JLabel zcLabel = new JLabel(rb.S("Koto Wallet  "));
 		zcLabel.setFont(new Font("Helvetica", Font.BOLD, 34));
 		//zcLabel.setForeground(Color.RED);
@@ -521,14 +522,16 @@ public class DashboardPanel
 
 		String text =
 			"<html>" + 
-		    "<TABLE border=0 cellspacing=0>" +
-			"<TR><TD><span style=\"font-size:1.1em;" + color1 + rb.S("\">Transparent (k1.jz) balance</span></TD><TD>:</TD><td align=\"right\"><span style=\"font-size:1.1em;") + color1 + "\">" + transparentUCBalance + " KOTO </span></TD></TR>" +
 
-        	"<TR><TD><span style=\"font-size:1.1em;" + color2 + rb.S("\">Private (z) balance</span></TD><TD>:</TD><td align= \"right\" <span style=\"font-size:1.1em;") + color2 + "\">" + privateUCBalance + " KOTO </span></TD></TR>" +
+		  "<span style=\"font-family:monospace;font-size:1em;" + color1 + rb.S("\">Transparent (k1,jz) balance : <span style=\"font-size:1.1em;\">") +
+				transparentUCBalance + " KOTO </span></span><br/> " +
+			"<span style=\"font-family:monospace;font-size:1em;" + color2 + rb.S("\">Private (z) balance &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.1em;\">") +
+		    	privateUCBalance + " KOTO </span></span><br/> " +
+			"<span style=\"font-family:monospace;font-size:1em;" + color3 + rb.S("\">Total (z+k1,jz) balance &nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.35em;\">") +
 
-        	"<TR><TD><span style=\"font-weight:bold;font-size:1.2em;" + color3 + rb.S("\">Total (z+k1.jz) balance</span></TD><TD>:</TD><td align=\"right\"><span style=\"font-weight:bold;font-size:1.2em;") + color3 + "\">" + totalUCBalance + " KOTO </span></TD></TR>" +
-        	"</TABLE>" + "</html>";
-
+		    	totalUCBalance + " KOTO </span></span>" +
+			"<br/>  </html>";
+		
 		this.walletBalanceLabel.setText(text);
 		
 		String toolTip = null;
