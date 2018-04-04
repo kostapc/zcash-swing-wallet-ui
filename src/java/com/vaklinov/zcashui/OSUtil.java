@@ -206,6 +206,11 @@ public class OSUtil
 	}
 
 	public static String getBlockchainDirectory() {
+
+        if(ZCashUI.dataDir != null){
+            return ZCashUI.dataDir;
+        }
+
 		OS_TYPE os = getOSType();
         try {
             if (os == OS_TYPE.MAC_OS) {

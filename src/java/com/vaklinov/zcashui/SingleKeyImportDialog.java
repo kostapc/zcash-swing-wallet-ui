@@ -72,12 +72,14 @@ public class SingleKeyImportDialog
 	JButton okButon;
 	JButton cancelButon;
 		
-	public SingleKeyImportDialog(JFrame parent, ZCashClientCaller caller)
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
+    public SingleKeyImportDialog(JFrame parent, ZCashClientCaller caller)
 	{
 		super(parent);
 		this.caller = caller;
 		
-		this.setTitle("Enter private key...");
+		this.setTitle(rb.S("Enter private key..."));
 	    this.setLocation(parent.getLocation().x + 50, parent.getLocation().y + 50);
 		this.setModal(true);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -88,7 +90,7 @@ public class SingleKeyImportDialog
 
 		JPanel tempPanel = new JPanel(new BorderLayout(0, 0));
 		tempPanel.add(this.upperLabel = new JLabel(
-			"<html>Please enter a single private key to import." +
+			rb.S("<html>Please enter a single private key to import.") +
 		    "</html>"), BorderLayout.CENTER);
 		controlsPanel.add(tempPanel);
 		
@@ -97,7 +99,7 @@ public class SingleKeyImportDialog
 		controlsPanel.add(dividerLabel);
 		
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(keyLabel = new JLabel("Key: "));
+		tempPanel.add(keyLabel = new JLabel(rb.S("Key: ")));
 		tempPanel.add(keyField = new JTextField(60));
 		controlsPanel.add(tempPanel);
 		
@@ -108,9 +110,9 @@ public class SingleKeyImportDialog
 		tempPanel = new JPanel(new BorderLayout(0, 0));
 		tempPanel.add(this.lowerLabel = new JLabel(
 			"<html><span style=\"font-weight:bold\">" + 
-		    "Warning:</span> Private key import is a slow operation that " +
-		    "requires blockchain rescanning (may take many minutes). <br/>The GUI " +
-			"will not be usable for other functions during this time</html>"), 
+		    rb.S("Warning:</span> Private key import is a slow operation that ") +
+		    rb.S("requires blockchain rescanning (may take many minutes). <br/>The GUI ") +
+			rb.S("will not be usable for other functions during this time</html>")), 
 			BorderLayout.CENTER);
 		controlsPanel.add(tempPanel);
 		
@@ -128,10 +130,10 @@ public class SingleKeyImportDialog
 		// Form buttons
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
-		okButon = new JButton("Import");
+		okButon = new JButton(rb.S("Import"));
 		buttonPanel.add(okButon);
 		buttonPanel.add(new JLabel("   "));
-		cancelButon = new JButton("Cancel");
+		cancelButon = new JButton(rb.S("Cancel"));
 		buttonPanel.add(cancelButon);
 		this.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
@@ -173,7 +175,7 @@ public class SingleKeyImportDialog
 		{
 			JOptionPane.showMessageDialog(
 				SingleKeyImportDialog.this.getParent(), 
-				"The key is empty. Please enter it into the text field.", "Empty...", 
+				rb.S("The key is empty. Please enter it into the text field."), rb.S("Empty..."), 
 				JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -202,10 +204,10 @@ public class SingleKeyImportDialog
 			    
 					JOptionPane.showMessageDialog(
 							SingleKeyImportDialog.this,  
-							"The private key:\n" +
+							rb.S("The private key:\n") +
 							key + "\n" +
-							"has been imported successfully.",
-							"Private key imported successfully...",
+							rb.S("has been imported successfully."),
+							rb.S("Private key imported successfully..."),
 							JOptionPane.INFORMATION_MESSAGE);		
 				} catch (Exception e)
 				{
@@ -213,11 +215,11 @@ public class SingleKeyImportDialog
 					
 					JOptionPane.showMessageDialog(
 						SingleKeyImportDialog.this.getRootPane().getParent(), 
-						"An error occurred when importing private key. Error message is:\n" +
+						rb.S("An error occurred when importing private key. Error message is:\n") +
 						e.getClass().getName() + ":\n" + e.getMessage() + "\n\n" +
-						"Please ensure that kotod is running and the key is in the correct \n" + 
-						"form. You may try again later...\n", 
-						"Error in importing private key", JOptionPane.ERROR_MESSAGE);
+						rb.S("Please ensure that kotod is running and the key is in the correct \n") + 
+						rb.S("form. You may try again later...\n"), 
+						rb.S("Error in importing private key"), JOptionPane.ERROR_MESSAGE);
 				} finally
 				{
 					SingleKeyImportDialog.this.setVisible(false);

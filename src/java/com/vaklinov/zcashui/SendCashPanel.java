@@ -99,6 +99,7 @@ public class SendCashPanel
 	private String       operationStatusID           = null;
 	private int          operationStatusCounter      = 0;
 	
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
 
 	public SendCashPanel(ZCashClientCaller clientCaller,  StatusUpdateErrorReporter errorReporter)
 		throws IOException, InterruptedException, WalletCallException
@@ -118,10 +119,10 @@ public class SendCashPanel
 		sendCashPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(new JLabel("Send cash from:       "));
+		tempPanel.add(new JLabel(rb.S("Send cash from:       ")));
 		tempPanel.add(new JLabel(
 			"<html><span style=\"font-size:0.8em;\">" +
-			"* Only addresses with a confirmed balance are shown as sources for sending!" +
+			rb.S("* Only addresses with a confirmed balance are shown as sources for sending!") +
 		    "</span>  "));
 		sendCashPanel.add(tempPanel);
 
@@ -135,7 +136,7 @@ public class SendCashPanel
 		sendCashPanel.add(dividerLabel);
 
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(new JLabel("Destination address:"));
+		tempPanel.add(new JLabel(rb.S("Destination address:")));
 		sendCashPanel.add(tempPanel);
 		
 		destinationAddressField = new JTextField(73);
@@ -148,10 +149,10 @@ public class SendCashPanel
 		sendCashPanel.add(dividerLabel);
 
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(new JLabel("Memo (optional):     "));
+		tempPanel.add(new JLabel(rb.S("Memo (optional):     ")));
 		tempPanel.add(new JLabel(
 				"<html><span style=\"font-size:0.8em;\">" +
-				"* Memo may be specified only if the destination is a Z (Private) address!" +
+				rb.S("* Memo may be specified only if the destination is a Z (Private) address!") +
 			    "</span>  "));
 		sendCashPanel.add(tempPanel);
 		
@@ -167,7 +168,7 @@ public class SendCashPanel
 		// Construct a more complex panel for the amount and transaction fee
 		JPanel amountAndFeePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		JPanel amountPanel = new JPanel(new BorderLayout());
-		amountPanel.add(new JLabel("Amount to send:"), BorderLayout.NORTH);
+		amountPanel.add(new JLabel(rb.S("Amount to send:")), BorderLayout.NORTH);
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		tempPanel.add(destinationAmountField = new JTextField(13));
 		destinationAmountField.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -175,7 +176,7 @@ public class SendCashPanel
 		amountPanel.add(tempPanel, BorderLayout.SOUTH);
 
 		JPanel feePanel = new JPanel(new BorderLayout());
-		feePanel.add(new JLabel("Transaction fee:"), BorderLayout.NORTH);
+		feePanel.add(new JLabel(rb.S("Transaction fee:")), BorderLayout.NORTH);
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		tempPanel.add(transactionFeeField = new JTextField(13));
 		transactionFeeField.setText("0.0001"); // Default value
@@ -192,7 +193,7 @@ public class SendCashPanel
 		sendCashPanel.add(dividerLabel);
 
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(sendButton = new JButton("Send   \u27A4\u27A4\u27A4"));
+		tempPanel.add(sendButton = new JButton(rb.S("Send   \u27A4\u27A4\u27A4")));
 		sendCashPanel.add(tempPanel);
 
 		dividerLabel = new JLabel("   ");
@@ -203,11 +204,11 @@ public class SendCashPanel
 		warningPanel.setLayout(new BorderLayout(7, 3));
 		JLabel warningL = new JLabel(
 				"<html><span style=\"font-size:0.8em;\">" +
-				" * When sending cash from a T (Transparent) address, the remining unspent balance is sent to another " +
-				"auto-generated T address. When sending from a Z (Private) address, the remining unspent balance remains with " +
-				"the Z address. In both cases the original sending address cannot be used for sending again until the " +
-				"transaction is confirmed. The address is temporarily removed from the list! Freshly mined coins may only "+
-				"be sent to a Z (Private) address." +
+				rb.S(" * When sending cash from a Transparent(k1,jz) address, the remining unspent balance is sent to another ") +
+				rb.S("auto-generated k1,jz address. When sending from a Private(z) address, the remining unspent balance remains with ") +
+				rb.S("the z address. In both cases the original sending address cannot be used for sending again until the ") +
+				rb.S("transaction is confirmed. The address is temporarily removed from the list! Freshly mined coins may only ")+
+				rb.S("be sent to a Private(z) address.") +
 			    "</span>");
 		warningPanel.add(warningL, BorderLayout.NORTH);
 		sendCashPanel.add(warningPanel);
@@ -222,8 +223,8 @@ public class SendCashPanel
 		operationStatusPanel.setLayout(new BoxLayout(operationStatusPanel, BoxLayout.Y_AXIS));
 		
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(new JLabel("Last operation status: "));
-        tempPanel.add(operationStatusLabel = new JLabel("N/A"));
+		tempPanel.add(new JLabel(rb.S("Last operation status: ")));
+        tempPanel.add(operationStatusLabel = new JLabel(rb.S("N/A")));
         operationStatusPanel.add(tempPanel);		
 		
 		dividerLabel = new JLabel("   ");
@@ -231,7 +232,7 @@ public class SendCashPanel
 		operationStatusPanel.add(dividerLabel);
 
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tempPanel.add(new JLabel("Progress: "));
+		tempPanel.add(new JLabel(rb.S("Progress: ")));
         tempPanel.add(operationStatusProhgressBar = new JProgressBar(0, 200));
         operationStatusProhgressBar.setPreferredSize(new Dimension(250, 17));
         operationStatusPanel.add(tempPanel);		
@@ -260,11 +261,11 @@ public class SendCashPanel
 					
 					JOptionPane.showMessageDialog(
 							SendCashPanel.this.getRootPane().getParent(), 
-							"An unexpected error occurred when sending cash!\n" + 
-							"Please ensure that the Koto daemon is running and\n" +
-							"parameters are correct. You may try again later...\n" +
+							rb.S("An unexpected error occurred when sending cash!\n") + 
+							rb.S("Please ensure that the Koto daemon is running and\n") +
+							rb.S("parameters are correct. You may try again later...\n") +
 							errMessage, 
-							"Error in sending cash", JOptionPane.ERROR_MESSAGE);
+							rb.S("Error in sending cash"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -309,7 +310,7 @@ public class SendCashPanel
 		this.timers.add(timerBalancesUpdater);
 		
 		// Add a popup menu to the destination address field - for convenience
-		JMenuItem paste = new JMenuItem("Paste address");
+		JMenuItem paste = new JMenuItem(rb.S("Paste address"));
 		final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.add(paste);
         paste.addActionListener(new ActionListener() 
@@ -365,9 +366,9 @@ public class SendCashPanel
 		{
 			JOptionPane.showMessageDialog(
 				SendCashPanel.this.getRootPane().getParent(), 
-				"There are no addresses with a positive balance to send\n" +
-				"cash from!", 
-				"No funds available", JOptionPane.ERROR_MESSAGE);
+				rb.S("There are no addresses with a positive balance to send\n") +
+				rb.S("cash from!"), 
+				rb.S("No funds available"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -375,9 +376,9 @@ public class SendCashPanel
 		{
 			JOptionPane.showMessageDialog(
 				SendCashPanel.this.getRootPane().getParent(), 
-				"Please select a source address with a current positive\n" +
-				"balance to send cash from!", 
-				"Please select source address", JOptionPane.ERROR_MESSAGE);
+				rb.S("Please select a source address with a current positive\n") +
+				rb.S("balance to send cash from!"), 
+				rb.S("Please select source address"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -392,27 +393,27 @@ public class SendCashPanel
 		
 		if ((sourceAddress == null) || (sourceAddress.trim().length() <= 20))
 		{
-			errorMessage = "Source address is invalid; it is too short or missing.";
+			errorMessage = rb.S("Source address is invalid; it is too short or missing.");
 		} else if (sourceAddress.length() > 512)
 		{
-			errorMessage = "Source address is invalid; it is too long.";
+			errorMessage = rb.S("Source address is invalid; it is too long.");
 		}
 		
 		// TODO: full address validation
 		if ((destinationAddress == null) || (destinationAddress.trim().length() <= 0))
 		{
-			errorMessage = "Destination address is invalid; it is missing.";
+			errorMessage = rb.S("Destination address is invalid; it is missing.");
 		} else if (destinationAddress.trim().length() <= 20)
 		{
-			errorMessage = "Destination address is invalid; it is too short.";
+			errorMessage = rb.S("Destination address is invalid; it is too short.");
 		} else if (destinationAddress.length() > 512)
 		{
-			errorMessage = "Destination address is invalid; it is too long.";
+			errorMessage = rb.S("Destination address is invalid; it is too long.");
 		}
 		
 		if ((amount == null) || (amount.trim().length() <= 0))
 		{
-			errorMessage = "Amount to send is invalid; it is missing.";
+			errorMessage = rb.S("Amount to send is invalid; it is missing.");
 		} else 
 		{
 			try 
@@ -420,13 +421,13 @@ public class SendCashPanel
 				double d = Double.valueOf(amount);
 			} catch (NumberFormatException nfe)
 			{
-				errorMessage = "Amount to send is invalid; it is not a number.";				
+				errorMessage = rb.S("Amount to send is invalid; it is not a number.");				
 			}
 		}
 		
 		if ((fee == null) || (fee.trim().length() <= 0))
 		{
-			errorMessage = "Transaction fee is invalid; it is missing.";
+			errorMessage = rb.S("Transaction fee is invalid; it is missing.");
 		} else 
 		{
 			try 
@@ -434,7 +435,7 @@ public class SendCashPanel
 				double d = Double.valueOf(fee);
 			} catch (NumberFormatException nfe)
 			{
-				errorMessage = "Transaction fee is invalid; it is not a number.";				
+				errorMessage = rb.S("Transaction fee is invalid; it is not a number.");				
 			}
 		}
 
@@ -443,7 +444,7 @@ public class SendCashPanel
 		{
 			JOptionPane.showMessageDialog(
 				SendCashPanel.this.getRootPane().getParent(), 
-				errorMessage, "Sending parameters are incorrect", JOptionPane.ERROR_MESSAGE);
+				errorMessage, rb.S("Sending parameters are incorrect"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -511,26 +512,26 @@ public class SendCashPanel
 						if (clientCaller.isCompletedOperationSuccessful(operationStatusID))
 						{
 							operationStatusLabel.setText(
-								"<html><span style=\"color:green;font-weight:bold\">SUCCESSFUL</span></html>");
+								rb.S("<html><span style=\"color:green;font-weight:bold\">SUCCESSFUL</span></html>"));
 							JOptionPane.showMessageDialog(
 									SendCashPanel.this.getRootPane().getParent(), 
-									"Succesfully sent " + amount + " KOTO from address: \n" +
+									rb.S("Succesfully sent ") + amount + rb.S(" KOTO from address: \n") +
 									sourceAddress + "\n" +
-									"to address: \n" +
+									rb.S("to address: \n") +
 									destinationAddress + "\n", 
-									"Cash sent successfully", JOptionPane.INFORMATION_MESSAGE);
+									rb.S("Cash sent successfully"), JOptionPane.INFORMATION_MESSAGE);
 						} else
 						{
 							String errorMessage = clientCaller.getOperationFinalErrorMessage(operationStatusID); 
 							operationStatusLabel.setText(
-								"<html><span style=\"color:red;font-weight:bold\">ERROR: " + errorMessage + "</span></html>");
+								rb.S("<html><span style=\"color:red;font-weight:bold\">ERROR: " + errorMessage + "</span></html>"));
 
 							JOptionPane.showMessageDialog(
 									SendCashPanel.this.getRootPane().getParent(), 
-									"An error occurred when sending cash. Error message is:\n" +
+									rb.S("An error occurred when sending cash. Error message is:\n") +
 									errorMessage + "\n\n" +
-									"Please ensure that sending parameters are correct. You may try again later...\n", 
-									"Error in sending cash", JOptionPane.ERROR_MESSAGE);
+									rb.S("Please ensure that sending parameters are correct. You may try again later...\n"), 
+									rb.S("Error in sending cash"), JOptionPane.ERROR_MESSAGE);
 
 						}
 						
@@ -557,7 +558,7 @@ public class SendCashPanel
 					{
 						// Update the progress
 						operationStatusLabel.setText(
-							"<html><span style=\"color:orange;font-weight:bold\">IN PROGRESS</span></html>");
+							rb.S("<html><span style=\"color:orange;font-weight:bold\">IN PROGRESS</span></html>"));
 						operationStatusCounter += 2;
 						int progress = 0;
 						if (operationStatusCounter <= 100)

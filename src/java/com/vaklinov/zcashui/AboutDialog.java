@@ -57,10 +57,12 @@ import javax.swing.border.EtchedBorder;
 public class AboutDialog
 	extends JDialog
 {
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
 	public AboutDialog(JFrame parent)
 		throws UnsupportedEncodingException
 	{
-		this.setTitle("About...");
+		this.setTitle(rb.S("About..."));
 		this.setSize(620, 440);
 	    this.setLocation(100, 100);
 		this.setLocationRelativeTo(parent);
@@ -252,7 +254,7 @@ public class AboutDialog
 		copyrigthPanel.add(PD, BorderLayout.CENTER);
 
 		
-		tabs.add("About", copyrigthPanel);
+		tabs.add(rb.S("About"), copyrigthPanel);
 
 		JPanel licensePanel = new JPanel();
 		licensePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -284,7 +286,7 @@ public class AboutDialog
 		licenseLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		licensePanel.add(licenseLabel, BorderLayout.NORTH);
 
-		tabs.add("License", licensePanel);
+		tabs.add(rb.S("License"), licensePanel);
 
 		this.getContentPane().setLayout(new BorderLayout(0, 0));
 		this.getContentPane().add(tabs, BorderLayout.NORTH);

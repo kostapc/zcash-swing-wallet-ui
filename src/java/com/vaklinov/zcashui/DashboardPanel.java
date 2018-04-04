@@ -91,6 +91,8 @@ public class DashboardPanel
 	private String[][] lastTransactionsData = null;
 	private DataGatheringThread<String[][]> transactionGatheringThread = null;
 	
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
 
 	public DashboardPanel(JFrame parentFrame,
 			              ZCashInstallationObserver installationObserver,
@@ -108,7 +110,7 @@ public class DashboardPanel
 
 		// Build content
 		JPanel dashboard = this;
-		dashboard.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+		dashboard.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		dashboard.setLayout(new BorderLayout(0, 0));
 
 		// Upper panel with wallet balance
@@ -124,16 +126,15 @@ public class DashboardPanel
 		);
 		tempPanel.add(logoLabel);
 		tempPanel.add(new JLabel(" "));
-
-		JLabel zcLabel = new JLabel("Koto Wallet   ");
-		zcLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 30));
+		JLabel zcLabel = new JLabel(rb.S("Koto Wallet  "));
+		zcLabel.setFont(new Font("Helvetica", Font.BOLD, 34));
 		//zcLabel.setForeground(Color.RED);
 		tempPanel.add(zcLabel);
-		tempPanel.setToolTipText("Powered by Koto\u00AE");
+		tempPanel.setToolTipText(rb.S("Powered by Koto\u00AE"));
 		balanceStatusPanel.add(tempPanel, BorderLayout.WEST);
 				
 		JLabel transactionHeadingLabel = new JLabel(
-			"<html><span style=\"font-size:2em\"><br/></span>Transactions:</html>");
+				rb.S("<html><span style=\"font-size:2em\"><br/></span>Transactions:</html>"));
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, -10));
 		transactionHeadingLabel.setFont(new Font("Helvetica", Font.BOLD, 19));
 		tempPanel.add(transactionHeadingLabel);
@@ -339,10 +340,10 @@ public class DashboardPanel
 			return;
 		}
 		
-		String daemonStatus = "<span style=\"color:green;font-weight:bold\">RUNNING</span>";
+		String daemonStatus = rb.S("<span style=\"color:green;font-weight:bold\">RUNNING</span>");
 		if (daemonInfo.status != DAEMON_STATUS.RUNNING)
 		{
-			daemonStatus = "<span style=\"color:red;font-weight:bold\">NOT RUNNING</span>";
+			daemonStatus = rb.S("<span style=\"color:red;font-weight:bold\">NOT RUNNING</span>");
 		}
 		
 		String runtimeInfo = "";
@@ -363,7 +364,7 @@ public class DashboardPanel
 		if (daemonInfo.status == DAEMON_STATUS.RUNNING)
 		{
 			runtimeInfo = "<span style=\"font-size:0.8em\">" +
-					      "Resident: " + daemonInfo.residentSizeMB + " MB" + virtual +
+					      rb.S("Resident: ") + daemonInfo.residentSizeMB + " MB" + virtual +
 					       cpuPercentage + "</span>";
 		}
 
@@ -392,9 +393,9 @@ public class DashboardPanel
 			walletEncryption + " <br/> " +
 			"<span style=\"font-size:3px\"><br/></span>" +
 			"<span style=\"font-size:0.8em\">" +
-			"Installation: " + OSUtil.getProgramDirectory() + ", " +
-	        "Blockchain: " + OSUtil.getBlockchainDirectory() + " <br/> " +
-		    "System: " + this.OSInfo + " </span> </html>";
+			rb.S("Installation: ") + OSUtil.getProgramDirectory() + ", " +
+	        rb.S("Blockchain: ") + OSUtil.getBlockchainDirectory() + " <br/> " +
+		    rb.S("System: ") + this.OSInfo + " </span> </html>";
 		this.daemonStatusLabel.setText(text);
 	}
 
@@ -481,12 +482,12 @@ public class DashboardPanel
 				
 		String text =
 			"<html> " +
-		    "Blockchain synchronized: <span style=\"font-weight:bold\">" + 
+			rb.S("Blockchain synchronized: <span style=\"font-weight:bold\">") +
 			percentage + "% </span> " + tick + " <br/>" +
-			"Up to: <span style=\"font-size:0.8em;font-weight:bold\">" + 
+			rb.S("Up to: <span style=\"font-size:0.8em;font-weight:bold\">") +
 		    info.lastBlockDate.toLocaleString() + "</span>  <br/> " + 
 			"<span style=\"font-size:1px\"><br/></span>" + 
-			"Network: <span style=\"font-weight:bold\">" + info.numConnections + " connections</span>" +
+			rb.S("Network: <span style=\"font-weight:bold\">") + info.numConnections + " connections</span>" +
 			"<span style=\"font-size:1.7em;color:" + netColor + "\">" + connections + "</span>";
 		this.networkAndBlockchainLabel.setText(text);
 	}
@@ -520,14 +521,14 @@ public class DashboardPanel
 
 		String text =
 			"<html>" + 
-		    "<span style=\"font-family:monospace;font-size:1em;" + color1 + "\">Transparent (k1,jz) balance : <span style=\"font-size:1.1em;\">" +
-				transparentUCBalance + " KOTO </span></span><br/> " +
-			"<span style=\"font-family:monospace;font-size:1em;" + color2 + "\">Private (z) balance &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.1em;\">" +
-		    	privateUCBalance + " KOTO </span></span><br/> " +
-			"<span style=\"font-family:monospace;font-size:1em;" + color3 + "\">Total (z+k1,jz) balance &nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.35em;\">" +
-		    	totalUCBalance + " KOTO </span></span>" +
-			"<br/>  </html>";
-		
+		    "<TABLE border=0 cellspacing=0>" +
+			"<TR><TD><span style=\"font-size:1.1em;" + color1 + rb.S("\">Transparent (k1.jz) balance</span></TD><TD>:</TD><td align=\"right\"><span style=\"font-size:1.1em;") + color1 + "\">" + transparentUCBalance + " KOTO </span></TD></TR>" +
+
+        	"<TR><TD><span style=\"font-size:1.1em;" + color2 + rb.S("\">Private (z) balance</span></TD><TD>:</TD><td align= \"right\" <span style=\"font-size:1.1em;") + color2 + "\">" + privateUCBalance + " KOTO </span></TD></TR>" +
+
+        	"<TR><TD><span style=\"font-weight:bold;font-size:1.2em;" + color3 + rb.S("\">Total (z+k1.jz) balance</span></TD><TD>:</TD><td align=\"right\"><span style=\"font-weight:bold;font-size:1.2em;") + color3 + "\">" + totalUCBalance + " KOTO </span></TD></TR>" +
+        	"</TABLE>" + "</html>";
+
 		this.walletBalanceLabel.setText(text);
 		
 		String toolTip = null;
@@ -536,12 +537,12 @@ public class DashboardPanel
 		    (!totalBalance.equals(totalUCBalance)))
 		{
 			toolTip = "<html>" +
-					  "Unconfirmed (unspendable) balance is being shown due to an<br/>" + 
-		              "ongoing transaction! Actual confirmed (spendable) balance is:<br/>" +
+					  rb.S("Unconfirmed (unspendable) balance is being shown due to an<br/>") +
+		              rb.S("ongoing transaction! Actual confirmed (spendable) balance is:<br/>") +
 		              "<span style=\"font-size:5px\"><br/></span>" +
-					  "Transp   arent balance(k1,jz) : " + transparentBalance + " KOTO<br/>" +
-		              "Private (z) balance           : <span style=\"font-weight:bold\">" + privateBalance + " KOTO</span><br/>" +
-					  "Total (z+k1,jz) balance       : <span style=\"font-weight:bold\">" + totalBalance + " KOTO</span>" +
+					  rb.S("Transp   arent balance(k1,jz) : ") + transparentBalance + " KOTO<br/>" +
+		              rb.S("Private (z) balance           : <span style=\"font-weight:bold\">") + privateBalance + " KOTO</span><br/>" +
+					  rb.S("Total (z+k1,jz) balance       : <span style=\"font-weight:bold\">") + totalBalance + " KOTO</span>" +
 					  "</html>";
 		}
 		
@@ -579,15 +580,15 @@ public class DashboardPanel
 	private JTable createTransactionsTable(String rowData[][])
 		throws WalletCallException, IOException, InterruptedException
 	{
-		String columnNames[] = { "Type", "Direction", "Confirmed?", "Amount", "Date", "Destination Address"};
+		String columnNames[] = { rb.S("Type"), rb.S("Confirmed?"), rb.S("Date"), rb.S("Direction"), rb.S("Amount"), rb.S("Destination Address")};
         JTable table = new TransactionTable(
         	rowData, columnNames, this.parentFrame, this.clientCaller); 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         table.getColumnModel().getColumn(0).setPreferredWidth(190);
-        table.getColumnModel().getColumn(1).setPreferredWidth(145);
-        table.getColumnModel().getColumn(2).setPreferredWidth(170);
-        table.getColumnModel().getColumn(3).setPreferredWidth(210);
-        table.getColumnModel().getColumn(4).setPreferredWidth(405);
+        table.getColumnModel().getColumn(3).setPreferredWidth(145);
+        table.getColumnModel().getColumn(1).setPreferredWidth(170);
+        table.getColumnModel().getColumn(4).setPreferredWidth(210);
+        table.getColumnModel().getColumn(2).setPreferredWidth(405);
         table.getColumnModel().getColumn(5).setPreferredWidth(800);
 
         return table;
@@ -620,15 +621,15 @@ public class DashboardPanel
 			public int compare(String[] o1, String[] o2)
 			{
 				Date d1 = new Date(0);
-				if (!o1[4].equals("N/A"))
+				if (!o1[2].equals("N/A"))
 				{
-					d1 = new Date(Long.valueOf(o1[4]).longValue() * 1000L);
+					d1 = new Date(Long.valueOf(o1[2]).longValue() * 1000L);
 				}
 
 				Date d2 = new Date(0);
-				if (!o2[4].equals("N/A"))
+				if (!o2[2].equals("N/A"))
 				{
-					d2 = new Date(Long.valueOf(o2[4]).longValue() * 1000L);
+					d2 = new Date(Long.valueOf(o2[2]).longValue() * 1000L);
 				}
 
 				if (d1.equals(d2))
@@ -661,50 +662,50 @@ public class DashboardPanel
 		for (String[] trans : allTransactions)
 		{
 			// Direction
-			if (trans[1].equals("receive"))
+			if (trans[3].equals("receive"))
 			{
-				trans[1] = "\u21E8 IN";
-			} else if (trans[1].equals("send"))
+				trans[3] = "\u21E8 IN";
+			} else if (trans[3].equals("send"))
 			{
-				trans[1] = "\u21E6 OUT";
-			} else if (trans[1].equals("generate"))
+				trans[3] = "\u21E6 OUT";
+			} else if (trans[3].equals("generate"))
 			{
-				trans[1] = "\u2692\u2699 MINED";
-			} else if (trans[1].equals("immature"))
+				trans[3] = "\u2692\u2699 MINED";
+			} else if (trans[3].equals("immature"))
 			{
-				trans[1] = "\u2696 Immature";
+				trans[3] = "\u2696 Immature";
 			};
 
 			// Date
-			if (!trans[4].equals("N/A"))
+			if (!trans[2].equals("N/A"))
 			{
-				trans[4] = new Date(Long.valueOf(trans[4]).longValue() * 1000L).toLocaleString();
+				trans[2] = new Date(Long.valueOf(trans[2]).longValue() * 1000L).toLocaleString();
 			}
 			
 			// Amount
 			try
 			{
-				double amount = Double.valueOf(trans[3]);
+				double amount = Double.valueOf(trans[4]);
 				if (amount < 0d)
 				{
 					amount = -amount;
 				}
-				trans[3] = df.format(amount);
+				trans[4] = df.format(amount);
 			} catch (NumberFormatException nfe)
 			{
-				Log.error("Error occurred while formatting amount: " + trans[3] + 
+				Log.error("Error occurred while formatting amount: " + trans[4] +
 						           " - " + nfe.getMessage() + "!");
 			}
 			
 			// Confirmed?
 			try
 			{
-				boolean isConfirmed = !trans[2].trim().equals("0"); 
+				boolean isConfirmed = !trans[1].trim().equals("0");
 				
-				trans[2] = isConfirmed ? ("Yes " + confirmed) : ("No  " + notConfirmed);
+				trans[1] = isConfirmed ? ("Yes " + confirmed) : ("No  " + notConfirmed);
 			} catch (NumberFormatException nfe)
 			{
-				Log.error("Error occurred while formatting confirmations: " + trans[2] + 
+				Log.error("Error occurred while formatting confirmations: " + trans[1] +
 						           " - " + nfe.getMessage() + "!");
 			}
 		}

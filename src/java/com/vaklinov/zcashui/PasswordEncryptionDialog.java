@@ -48,16 +48,18 @@ public class PasswordEncryptionDialog
 {
 	protected JTextField passwordConfirmationField = null;
 	
-	public PasswordEncryptionDialog(JFrame parent)
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
+    public PasswordEncryptionDialog(JFrame parent)
 	{
 		super(parent);
 
 		this.upperLabel.setText(
-			"<html>The wallet.dat file will be encrypted with a password. If the operation is successful, " +
-            "kotod will automatically stop and will need to be restarted. The GUI wallet will also be stopped " +
-            "and will need to be restarted. Please enter the password:</html>");
+			rb.S("<html>The wallet.dat file will be encrypted with a password. If the operation is successful, ") +
+			rb.S("kotod will automatically stop and will need to be restarted. The GUI wallet will also be stopped ") +
+            rb.S("and will need to be restarted. Please enter the password:</html>"));
 		
-		JLabel confLabel = new JLabel("Confirmation: ");
+		JLabel confLabel = new JLabel(rb.S("Confirmation: "));
 		this.freeSlotPanel.add(confLabel);
 		this.freeSlotPanel.add(passwordConfirmationField = new JPasswordField(30));
 		this.passwordLabel.setPreferredSize(confLabel.getPreferredSize());
@@ -91,7 +93,7 @@ public class PasswordEncryptionDialog
 		{
 			JOptionPane.showMessageDialog(
 				this.getParent(), 
-				"The password and the confirmation do not match!", "Password mismatch...", 
+				rb.S("The password and the confirmation do not match!"), rb.S("Password mismatch..."), 
 				JOptionPane.ERROR_MESSAGE);
 			return;
 		}

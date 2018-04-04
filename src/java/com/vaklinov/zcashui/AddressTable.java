@@ -49,13 +49,15 @@ import javax.swing.KeyStroke;
 public class AddressTable 
 	extends DataTable 
 {	
-	public AddressTable(final Object[][] rowData, final Object[] columnNames, 
+    private ResourceBundleUTF8 rb = ResourceBundleUTF8.getResourceBundle();
+
+    public AddressTable(final Object[][] rowData, final Object[] columnNames, 
 			            final ZCashClientCaller caller)
 	{
 		super(rowData, columnNames);
 		int accelaratorKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
         
-		JMenuItem obtainPrivateKey = new JMenuItem("Obtain private key...");
+		JMenuItem obtainPrivateKey = new JMenuItem(rb.S("Obtain private key..."));
 		obtainPrivateKey.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, accelaratorKeyMask));
         popupMenu.add(obtainPrivateKey);
         
@@ -102,12 +104,12 @@ public class AddressTable
 						
 						JOptionPane.showMessageDialog(
 							AddressTable.this.getRootPane().getParent(), 
-							(isZAddress ? "Private (z)" : "Transparent (k1,jz)") +  " address:\n" +
+							(isZAddress ? rb.S("Private (z)") : rb.S("Transparent (k1,jz)")) +  rb.S(" address:\n") +
 							address + "\n" + 
-							"has private key:\n" +
+							rb.S("has private key:\n") +
 							privateKey + "\n\n" +
-							"The private key has also been copied to the clipboard.", 
-							"Private key information", JOptionPane.INFORMATION_MESSAGE);
+							rb.S("The private key has also been copied to the clipboard."), 
+							rb.S("Private key information"), JOptionPane.INFORMATION_MESSAGE);
 
 						
 					} catch (Exception ex)
